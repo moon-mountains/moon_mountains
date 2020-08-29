@@ -29,7 +29,7 @@
         placeholder="联系人"
         :rules="[{ required: true, message: '请填写联系人' }]"
       />
-      <van-field
+      <!-- <van-field
         class="m_1"
         input-align="right"
         v-model="caseInfoForm.insureHappenTime"
@@ -37,14 +37,28 @@
         label="出险时间"
         placeholder="出险时间"
         :rules="[{ required: true, message: '请填写出险时间' }]"
+      /> -->
+      <van-cell
+      title="出险时间"
+      is-link
+      :value="caseInfoForm.insureHappenTime"
+      @click="showPopup" />
+    <van-popup v-model="showTime" position="bottom">
+      <van-datetime-picker
+        v-model="currentDate"
+        type="date"
+        title="选择年月日"
+        :min-date="minDate"
+        :max-date="maxDate"
+        :loading="isLoadingShow"
+        :formatter="formatter"
+        @cancel="showTime = false"
+        @confirm="confirmPicker"
       />
-      <!-- <van-field
-        v-model="caseInfoForm.saleMenName"
-        name="事故原因"
-        label="事故原因"
-        placeholder="事故原因"
-        :rules="[{ required: true, message: '请填写事故原因' }]"
-      />-->
+    </van-popup>
+
+
+
       <van-field
         class="m_1"
         input-align="right"
@@ -84,12 +98,17 @@ import {mapActions} from 'vuex'
 export default {
   data() {
     return {
+      showTime: false,
       isShowSelection: false,
+      isLoadingShow: false,
+      minDate: new Date(2020, 0, 1),
+      maxDate: new Date(2050, 11, 30),
+      currentDate: new Date(),
       caseInfoForm: {
         salesmanName: "",
         insurePersion: "",
         linkPerson: "",
-        insureHappenTime: "",
+        insureHappenTime: '',
         accidentReason: "",
         accidentDes: "",
       },
@@ -108,7 +127,7 @@ export default {
       // 非静默授权，第一次有弹框
       // 截取路径中的code，如果没有就去微信授权，如果已经获取到了就直接传code给后台获取openId
       // const code =  this.$route.query.code;
-      const code = this.getUrlParams("code");
+      const code = this.getUrlParams("code") || '';
       //把code传给后台获取用户信息
       this.getOpenId(code);
     },
@@ -117,7 +136,8 @@ export default {
       console.log(code);
       this.getWxUserInfo({ code: code }).then((data = {}) => {
         if (data.code === 200) {
-          this.wxUserInfo = data.data;
+          const res = data.data;
+          this.wxUserInfo = res;
         } else {
           // this.$AlertTips(data.message || "获取用户信息失败");
         }
@@ -137,7 +157,47 @@ export default {
       if (urlParams) {
         return urlParams[name];
       }
-      return null;
+      return '';
+    },
+    showPopup () {
+      this.showTime = true
+      this.isLoadingShow = true
+      setTimeout(() => {
+        this.isLoadingShow = false
+      }, 500)
+    },
+    // 确认选择的时间
+    confirmPicker (val) {
+      let year = val.getFullYear()
+      let month = val.getMonth() + 1
+      let day = val.getDate()
+      // let hour = val.getHours()
+      // let minute = val.getMinutes()
+      if (month >= 1 && month <= 9) { month = `0${month}` }
+      if (day >= 1 && day <= 9) { day = `0${day}` }
+      // if (hour >= 0 && hour <= 9) { hour = `0${hour}` }
+      // if (minute >= 0 && minute <= 9) { minute = `0${minute}` }
+      // this.className = 'timeClass'
+      // this.timeValue = `${year}-${month}-${day} ${hour}:${minute}`
+      this.caseInfoForm.insureHappenTime = `${year}-${month}-${day}`
+      this.showTime = false
+    },
+    // 选项格式化函数
+    formatter (type, value) {
+      if (type === 'year') {
+        return `${value}年`
+      } else if (type === 'month') {
+        return `${value}月`
+      } else if (type === 'day') {
+        return `${value}日`
+      } else if (type === 'hour') {
+        return `${value}时`
+      } else if (type === 'minute') {
+        return `${value}分`
+      } else if (type === 'second') {
+        return `${value}秒`
+      }
+      return value
     },
     selectReason(item) {
       this.caseInfoForm.accidentReason = item.name;
