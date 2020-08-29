@@ -20,8 +20,8 @@ html,body{
 .b_g_grey{
     background: #eceaea
 }
-.m_t_5{
-    margin-top: .5rem;
+.m_t_2{
+    margin-top: .2rem;
 }
 .b_g_white{
     background: #ffffff
@@ -37,4 +37,25 @@ html,body{
     left: 50%;
     margin-left: -0.5rem;
     margin-top: -.5rem;
+}
+.h_117{
+    height: 1.17rem;
+    line-height: 1.17rem;
+}
+.f_4{
+    font-size: 0.4rem;
+}
+.m_l_5{
+    margin-left: 0.5rem;
+}
+.d_f{
+    display: flex;
+    justify-content: space-around;
+    background: #ffffff;
+}
+.b_1{
+    border: .01rem solid #edeaea;
+}
+.t_a_c{
+    text-align: center;
 }

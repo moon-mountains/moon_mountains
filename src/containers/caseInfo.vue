@@ -99,6 +99,7 @@
 
 <script>
 import { cssEnumeration } from "../assets/js/enumerations.js";
+import { getUrlParams } from "../assets/js/util.js";
 import {mapActions} from 'vuex'
 
 export default {
@@ -133,7 +134,7 @@ export default {
       // 非静默授权，第一次有弹框
       // 截取路径中的code，如果没有就去微信授权，如果已经获取到了就直接传code给后台获取openId
       // const code =  this.$route.query.code;
-      const code = this.getUrlParams("code") || '';
+      const code = getUrlParams(this.$route.query) || '';
       //把code传给后台获取用户信息
       this.getOpenId(code);
     },
@@ -148,22 +149,6 @@ export default {
           // this.$AlertTips(data.message || "获取用户信息失败");
         }
       });
-    },
-    getUrlParams(name) {
-      let url = decodeURIComponent(location.search);
-      let theRequest = new Object();
-      if (url.indexOf("?") != -1) {
-        let str = url.substr(1);
-        let strs = str.split("&");
-        for (let i = 0; i < strs.length; i++) {
-          theRequest[strs[i].split("=")[0]] = unescape(strs[i].split("=")[1]);
-        }
-      }
-      let urlParams = Object.assign(theRequest, this.$route.query);
-      if (urlParams) {
-        return urlParams[name];
-      }
-      return '';
     },
     showPopup () {
       this.showTime = true

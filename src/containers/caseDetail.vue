@@ -1,38 +1,50 @@
 <template>
   <section>
-    <van-nav-bar title="个人中心" />
-    <van-row class="m_t_5 b_g_white">
-      <van-col class="h_15" span="6"><div><van-icon name="https://b.yzcdn.cn/vant/icon-demo-1126.png" /></div></van-col>
-      <van-col @click="toCaseDetailPage" class="h_15" span="18" is-link><div>我的案件</div></van-col>
+    <van-nav-bar title="案件详情" />
+    <van-divider class="h_117 b_g_white" content-position="left">案件处理日志</van-divider>
+    <!-- <div class="d_f">
+      <div class="b_1">日期</div>
+      <div class="b_1">案件状态</div>
+      <div class="b_1">备注</div>
+    </div>
+    <div class="d_f">
+      <div class="b_1">2012-12-25</div>
+      <div class="b_1">案件进行中</div>
+      <div class="b_1">玛雅日历</div>
+    </div> -->
+    <van-row class="t_a_c b_g_white">
+      <van-col class="b_1" :span="8">日期</van-col>
+      <van-col class="b_1" :span="8">案件状态</van-col>
+      <van-col class="b_1" :span="8">备注</van-col>
+    </van-row>
+    <van-row class="t_a_c b_g_white">
+      <van-col class="b_1" :span="8">2012-12-25</van-col>
+      <van-col class="b_1" :span="8">案件进行中</van-col>
+      <van-col class="b_1" :span="8">玛雅日历</van-col>
     </van-row>
   </section>
 </template>
 
 <script>
-import { cssEnumeration } from "../assets/js/enumerations.js";
 
 export default {
   data() {
     return {
-      isShowSelection: false,
-      caseInfoForm: {
-        saleMenName: "",
-        reason: "",
-      },
-      reasonList: [
-        { name: "车泡水", className: cssEnumeration.className },
-        { name: "车晒爆了", className: cssEnumeration.className },
-      ],
+      caseList: [
+        {
+          caseNo: '7488370859887820804385',
+          caseStatus: '0'
+        },
+        {
+          caseNo: '7485716215847976966813',
+          caseStatus: '1'
+        }
+      ]
     };
   },
   created() {},
   methods: {
-    selectReason(item) {
-      this.caseInfoForm.reason = item.name;
-      this.isShowSelection = false;
-    },
     toCaseDetailPage() {
-      console.log("sdfsf");
       this.$router.push("caseDetail");
     },
   },

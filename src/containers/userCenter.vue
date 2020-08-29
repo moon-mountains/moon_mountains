@@ -2,41 +2,67 @@
   <section>
     <van-nav-bar title="个人中心" />
     <van-row class="m_t_5 b_g_white">
-      <van-col class="h_15" span="6"><div><van-icon name="https://b.yzcdn.cn/vant/icon-demo-1126.png" /></div></van-col>
-      <van-col class="h_15" span="18"><div>用户{{'xxxx'}}</div></van-col>
+      <van-col class="h_15" span="6">
+        <div>
+          <van-icon :name="avatarUrl" />
+        </div>
+      </van-col>
+      <van-col class="h_15" span="18">
+        <div>用户{{'xxxx'}}</div>
+      </van-col>
     </van-row>
     <van-row class="m_t_5 b_g_white">
-      <van-col class="h_15" span="6"><div><van-icon name="https://b.yzcdn.cn/vant/icon-demo-1126.png" /></div></van-col>
-      <van-col @click="toCaseListPage" class="h_15" span="18" is-link><div>我的案件</div></van-col>
+      <van-col class="h_15" span="6">
+        <div>
+          <van-icon :name="avatarUrl" />
+        </div>
+      </van-col>
+      <van-col class="h_15" span="18">
+        <van-cell-group>
+          <van-cell @click="toCaseListPage" title="我的案件" value="" is-link />
+        </van-cell-group>
+      </van-col>
     </van-row>
   </section>
 </template>
 
 <script>
-import { cssEnumeration } from "../assets/js/enumerations.js";
+import { getUrlParams } from "../assets/js/util.js";
+import { mapActions } from "vuex";
 
 export default {
   data() {
     return {
-      isShowSelection: false,
-      caseInfoForm: {
-        saleMenName: "",
-        reason: "",
-      },
-      reasonList: [
-        { name: "车泡水", className: cssEnumeration.className },
-        { name: "车晒爆了", className: cssEnumeration.className },
-      ],
+      avatarUrl: "",
+      wxUserInfo: {},
     };
   },
-  created() {},
+  created() {
+    this.getCode();
+  },
   methods: {
-    selectReason(item) {
-      this.caseInfoForm.reason = item.name;
-      this.isShowSelection = false;
+    ...mapActions(["getWxUserInfo"]),
+    getCode() {
+      // 非静默授权，第一次有弹框
+      // 截取路径中的code，如果没有就去微信授权，如果已经获取到了就直接传code给后台获取openId
+      const code = getUrlParams(this.$route.query) || '';
+      //把code传给后台获取用户信息
+      this.getOpenId(code);
+    },
+    getOpenId(code) {
+      // 通过code调用后台获取 openId等用户信息
+      console.log(code);
+      this.getWxUserInfo({ code: code }).then((data = {}) => {
+        if (data.code === 200) {
+          const res = data.data
+          this.wxUserInfo = res;
+          this.avatarUrl = this.wxUserInfo.headimgurl || "";
+        } else {
+          // this.$AlertTips(data.message || "获取用户信息失败");
+        }
+      });
     },
     toCaseListPage() {
-      console.log("sdfsf");
       this.$router.push("caseList");
     },
   },
