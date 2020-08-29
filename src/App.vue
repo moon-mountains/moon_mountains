@@ -1,5 +1,8 @@
 <template>
   <div class="b_g_grey">
+    <van-overlay :show="show" @click="show = false">
+      <van-loading class="lod_box" />
+    </van-overlay>
     <!-- <img alt="Vue logo" src="./assets/logo.png">
     <HelloWorld msg="Welcome to Your Vue.js App"/> -->
     <router-view></router-view>
@@ -13,6 +16,14 @@ export default {
   name: 'App',
   components: {
     // HelloWorld
+  },
+  data() {
+    return {
+      show: false
+    }
+  },
+  created() {
+    this.show = this.$IsLoadding
   }
 }
 </script>

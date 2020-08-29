@@ -1,5 +1,6 @@
 import './assets/css/main.css'
 import Vue from 'vue'
+import store from './vuex/store.js'
 import Vant from 'vant';
 import 'lib-flexible/flexible'
 import 'vant/lib/index.css';
@@ -8,22 +9,23 @@ import axios from 'axios';
 import VueRouter from 'vue-router'
 import router from './router/router.js'
 
-Vue.config.productionTip = false
+// Vue.config.productionTip = false
 const originalPush = VueRouter.prototype.push
 VueRouter.prototype.push = function push(location) {
   return originalPush.call(this, location).catch(err => err)
 }
 
 // http request 拦截器
-axios.interceptors.request.use(config=>{ 
+axios.interceptors.request.use(config=>{
+  Vue.prototype.$IsLoadding = true
  return config;
  },err=>{
    return Promise.reject(err);
  })
 
 // http response 拦截器
-axios.interceptors.response.use(
-  response => {
+axios.interceptors.response.use(response => {
+    Vue.prototype.$IsLoadding = false
     //拦截响应，做统一处理 
     if (response.data.code == 401 || response.data.status == 401){
         console.log("当前路由地址：",router.currentRoute.fullPath)
@@ -52,6 +54,6 @@ router.beforeEach((to, from, next) => {
 
 new Vue({
   router,
-  // store,
+  store,
   render: h => h('router-view')
 }).$mount('#app')
