@@ -1,6 +1,5 @@
 <template>
-  <section>
-    
+  <section v-if="isShowAll">  
     <van-form autocomplete="off" @submit="onSubmit">
       <van-field
         class="m_1"
@@ -105,6 +104,7 @@ import {mapActions} from 'vuex'
 export default {
   data() {
     return {
+      isShowAll: false,
       showTime: false,
       isShowSelection: false,
       isLoadingShow: false,
@@ -126,6 +126,7 @@ export default {
     };
   },
   created() {
+    this.isShowAll = false
     this.getCode();
   },
   methods: {
@@ -133,7 +134,6 @@ export default {
     getCode() {
       // 非静默授权，第一次有弹框
       // 截取路径中的code，如果没有就去微信授权，如果已经获取到了就直接传code给后台获取openId
-      // const code =  this.$route.query.code;
       const code = getUrlParams(this.$route.query) || '';
       //把code传给后台获取用户信息
       this.getOpenId(code);
@@ -141,11 +141,16 @@ export default {
     getOpenId(code) {
       // 通过code调用后台获取 openId等用户信息
       console.log('code---', code);
-      this.getWxUserInfo({ code: code }).then((data = {}) => {
+      this.getWxUserInfo({code}).then((data = {}) => {
         if (data.code === 200) {
           console.log('getWxUserInfo---200', data)
           const res = data.data;
+          if (!res.nickname) {
+            this.$notify('未授权成功，请重新进入');
+            return;
+          }
           this.wxUserInfo = res;
+          this.isShowAll = true
         } else {
           console.log('getWxUserInfo---!200', data)
           // this.$AlertTips(data.message || "获取用户信息失败");
@@ -197,14 +202,13 @@ export default {
       this.isShowSelection = false;
     },
     onSubmit() {
-      console.log('onSubmit-----', this.claimForm)
-      this.saveReportCaseBaseInfo(this.claimForm).then((data = {}) => {
+      console.log('onSubmit-----', this.caseInfoForm)
+      this.saveReportCaseBaseInfo(this.caseInfoForm).then((data = {}) => {
         console.log('saveReportCaseBaseInfo-----', data)
         if (data.code === 200) {
-          this.$message.success("提交报案成功");
           this.$router.push("userCenter");
         } else {
-          // this.$AlertTips(data.message || "新增报案失败");
+          this.$notify('');
         }
       });
     },
