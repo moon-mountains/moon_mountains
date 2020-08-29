@@ -1,8 +1,10 @@
 import axios from 'axios'
 import { api } from '../api/urls.js'
-const caseList = {
+const caseInfo = {
     state: {
-        userInfo: {}
+        userInfo: {
+            openid: 123
+        }
     },
     mutations: {
         getWxUserInfo(state, info) {
@@ -27,6 +29,7 @@ const caseList = {
             });
         },
         saveReportCaseBaseInfo(context, params) {
+            console.log('--get--token', window.sessionStorage.getItem('token'));
             return axios({
                 headers: {
                     'Authorization': window.sessionStorage.getItem('token') || ''
@@ -41,8 +44,22 @@ const caseList = {
                 console.log('saveReportCaseBaseInfo----err', err)
             });
         },
+        queryAllSalesman() {
+            return axios({
+                headers: {
+                    'Authorization': window.sessionStorage.getItem('token') || ''
+                },
+                method: 'post',
+                url: api.queryAllSalesman
+            }).then(res => {
+                console.log('queryAllSalesman-----', res)
+                return res
+            }).catch(err => {
+                console.log('queryAllSalesman----err', err)
+            });
+        },
     },
     getters: {}
 }
 
-export default caseList
+export default caseInfo
