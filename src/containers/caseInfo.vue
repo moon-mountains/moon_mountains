@@ -152,6 +152,7 @@ export default {
           this.wxUserInfo = res;
           this.isShowAll = true
         } else {
+          this.$notify('请重新进入');
           console.log('getWxUserInfo---!200', data)
           // this.$AlertTips(data.message || "获取用户信息失败");
         }
