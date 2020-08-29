@@ -140,12 +140,14 @@ export default {
     },
     getOpenId(code) {
       // 通过code调用后台获取 openId等用户信息
-      console.log(code);
+      console.log('code---', code);
       this.getWxUserInfo({ code: code }).then((data = {}) => {
         if (data.code === 200) {
+          console.log('getWxUserInfo---200', data)
           const res = data.data;
           this.wxUserInfo = res;
         } else {
+          console.log('getWxUserInfo---!200', data)
           // this.$AlertTips(data.message || "获取用户信息失败");
         }
       });
@@ -195,8 +197,9 @@ export default {
       this.isShowSelection = false;
     },
     onSubmit() {
-      console.log('onSubmit-----')
+      console.log('onSubmit-----', this.claimForm)
       this.saveReportCaseBaseInfo(this.claimForm).then((data = {}) => {
+        console.log('saveReportCaseBaseInfo-----', data)
         if (data.code === 200) {
           this.$message.success("提交报案成功");
           this.$router.push("userCenter");
