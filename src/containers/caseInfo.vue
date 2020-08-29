@@ -59,7 +59,7 @@
 
 
 
-      <van-field
+      <!-- <van-field
         class="m_1"
         input-align="right"
         v-model="caseInfoForm.accidentReason"
@@ -69,7 +69,13 @@
         label="事故原因"
         placeholder="事故原因"
         :rules="[{ required: true, message: '请填写事故原因' }]"
-      />
+      /> -->
+      <van-cell
+      class="m_1"
+      title="事故原因"
+      is-link
+      :value="caseInfoForm.accidentReason"
+      @click="isShowSelection = true" />
       <van-action-sheet
         v-model="isShowSelection"
         :round="false"
@@ -207,7 +213,7 @@ export default {
       this.saveReportCaseBaseInfo(this.claimForm).then((data = {}) => {
         if (data.code === 200) {
           this.$message.success("提交报案成功");
-          // this.$router.push("userCenter");
+          this.$router.push("userCenter");
         } else {
           // this.$AlertTips(data.message || "新增报案失败");
         }
