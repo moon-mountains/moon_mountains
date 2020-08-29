@@ -195,6 +195,7 @@ export default {
       this.isShowSelection = false;
     },
     onSubmit() {
+      console.log('onSubmit-----')
       this.saveReportCaseBaseInfo(this.claimForm).then((data = {}) => {
         if (data.code === 200) {
           this.$message.success("提交报案成功");

@@ -12,6 +12,7 @@ const caseList = {
             }).then((data = {}) => {
                 if(data.code === 200) {
                     let res = data.data
+                    console.log('getWxUserInfo-----', res)
                     context.commit('getWxUserInfo', res.data)
                 }
                 return data
@@ -28,6 +29,7 @@ const caseList = {
                 url: api.saveReportCaseBaseInfo,
                 data: params
             }).then(res => {
+                console.log('saveReportCaseBaseInfo-----', res)
                 return res
             }).catch(err => {
                 console.log('saveReportCaseBaseInfo----err', err)
