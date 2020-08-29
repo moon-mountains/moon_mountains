@@ -208,7 +208,7 @@ export default {
         if (data.code === 200) {
           this.$router.push("userCenter");
         } else {
-          this.$notify('');
+          this.$notify(data.message || '提交失败了');
         }
       });
     },
