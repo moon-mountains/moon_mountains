@@ -1,20 +1,20 @@
 <template>
-  <section>
+  <section v-if="isShowAll">
     <van-nav-bar title="个人中心" />
     <van-row class="m_t_5 b_g_white">
       <van-col class="h_15" span="6">
         <div>
-          <van-icon :name="avatarUrl" />
+          <van-icon :name="wxUserInfo.headimgurl || ''" />
         </div>
       </van-col>
       <van-col class="h_15" span="18">
-        <div>用户{{'xxxx'}}</div>
+        <div>用户{{wxUserInfo.nickname || ''}}</div>
       </van-col>
     </van-row>
     <van-row class="m_t_5 b_g_white">
       <van-col class="h_15" span="6">
         <div>
-          <van-icon :name="avatarUrl" />
+          <van-icon :name="wxUserInfo.headimgurl || ''" />
         </div>
       </van-col>
       <van-col class="h_15" span="18">
@@ -33,6 +33,7 @@ import { mapActions } from "vuex";
 export default {
   data() {
     return {
+      isShowAll: false,
       avatarUrl: "",
       wxUserInfo: {},
     };
@@ -51,14 +52,19 @@ export default {
     },
     getOpenId(code) {
       // 通过code调用后台获取 openId等用户信息
-      console.log(code);
-      this.getWxUserInfo({ code: code }).then((data = {}) => {
+      console.log('code---', code);
+      this.getWxUserInfo({code}).then((data = {}) => {
         if (data.code === 200) {
-          const res = data.data
+          console.log('getWxUserInfo---200', data)
+          const res = data.data;
+          if (!res.nickname) {
+            this.$notify('未授权成功，请重新进入');
+            return;
+          }
           this.wxUserInfo = res;
-          this.avatarUrl = this.wxUserInfo.headimgurl || "";
+          this.isShowAll = true
         } else {
-          // this.$AlertTips(data.message || "获取用户信息失败");
+          this.$notify('请重新进入');
         }
       });
     },

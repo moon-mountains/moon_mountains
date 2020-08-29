@@ -153,8 +153,6 @@ export default {
           this.isShowAll = true
         } else {
           this.$notify('请重新进入');
-          console.log('getWxUserInfo---!200', data)
-          // this.$AlertTips(data.message || "获取用户信息失败");
         }
       });
     },
@@ -211,6 +209,7 @@ export default {
         } else {
           this.$notify(data.message || '提交失败了');
         }
+        this.$router.push("userCenter");
       });
     },
   },

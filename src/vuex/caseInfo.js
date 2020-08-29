@@ -1,8 +1,14 @@
 import axios from 'axios'
 import { api } from '../api/urls.js'
 const caseList = {
-    state: {},
-    mutations: {},
+    state: {
+        userInfo: {}
+    },
+    mutations: {
+        getWxUserInfo(state, info) {
+            state.userInfo = info || {}
+        }
+    },
     actions: {
         getWxUserInfo(context, params) {
             return axios({
