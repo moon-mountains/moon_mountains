@@ -1,5 +1,5 @@
 <template>
-  <section v-if="!isShowAll">
+  <section v-if="isShowAll">
     <van-nav-bar title="个人中心" />
     <van-row class="m_t_1 b_g_white">
       <van-col class="h_15" span="6">
@@ -28,7 +28,7 @@
 
 <script>
 import { getUrlParams } from "../assets/js/util.js";
-import { mapActions } from "vuex";
+import { mapState, mapActions } from "vuex";
 
 export default {
   data() {
@@ -41,9 +41,21 @@ export default {
   created() {
     this.getCode();
   },
+  computed: {
+    ...mapState({
+      userInfo(state) {
+        return state.caseInfo.userInfo || {};
+      },
+    }),
+  },
   methods: {
     ...mapActions(["getWxUserInfo"]),
     getCode() {
+      // 判断是否有授权后用户信息,有信息则不再获取
+      if(this.userInfo.nickname) {
+        this.wxUserInfo = this.userInfo;
+        return;
+      }
       // 非静默授权，第一次有弹框
       // 截取路径中的code，如果没有就去微信授权，如果已经获取到了就直接传code给后台获取openId
       const code = getUrlParams(this.$route.query) || '';
@@ -61,7 +73,7 @@ export default {
             this.$notify('未授权成功，请重新进入');
             return;
           }
-          this.wxUserInfo = res;
+          this.wxUserInfo = res || {};
           this.isShowAll = true
         } else {
           this.$notify('请重新进入');
