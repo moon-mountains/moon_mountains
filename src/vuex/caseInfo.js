@@ -22,7 +22,7 @@ const caseInfo = {
                 if(data.code === 200) {
                     let res = data.data
                     console.log('getWxUserInfo-----', res)
-                    context.commit('getWxUserInfo', res.data)
+                    context.commit('getWxUserInfo', res)
                 }
                 return data
             }).catch(err => {
