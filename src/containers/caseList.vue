@@ -8,7 +8,7 @@
       </van-col>
       <van-col :span="24">
         <!-- <div class="h_117 f_4 m_l_5">案件号:{{item.caseNo}}</div> -->
-        <van-cell @click="toCaseDetailPage(item)" title="状态:" :value="item.caseStatus=== '0'?'处理中': '已结案'" is-link/>
+        <van-cell @click="toCaseDetailPage(item)" title="状态:" :value="item.caseStatus | translateStatus" is-link/>
       </van-col>
     </van-row>
   </section>
@@ -20,17 +20,22 @@ import { mapActions } from 'vuex';
 export default {
   data() {
     return {
-      caseList: [
-        {
-          caseNo: '7488370859887820804385',
-          caseStatus: '0'
-        },
-        {
-          caseNo: '7485716215847976966813',
-          caseStatus: '1'
-        }
-      ]
+      caseList: []
     };
+  },
+  filters: {
+    translateStatus(value) {
+      const dealingArr = ['01', '02', '03', '04']; // 处理中，01：案件信息不错，02:现场指导客户，03:收集资料，04:定损
+      const dealdArr = ['05', '06', '07']; // 已完成，05：结案，06:拒赔，07:销案
+      if(dealingArr.includes(value)) {
+        return '处理中'
+      }
+      if(dealdArr.includes(value)) {
+        return '已完成'
+      }else {
+        return '待处理'
+      }
+    }
   },
   created() {
     this.getqueryWxCaseStatusList()
