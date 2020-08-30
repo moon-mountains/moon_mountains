@@ -9,4 +9,6 @@ exports.api = {
     saveReportCaseBaseInfo: `${orign}/auth/wx/saveWxCaseBaseInfo`,
     // 查询微信案件列表
     queryWxCaseStatusList: `${orign}/auth/wx/queryWxCaseStatusList`,
+    // 查询微信案件详情
+    queryWxCaseLog: `${orign}/auth/wx/queryWxCaseLog`,
 }

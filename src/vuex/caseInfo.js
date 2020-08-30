@@ -78,6 +78,23 @@ const caseInfo = {
                 console.log('queryWxCaseStatusList----err', err)
             });
         },
+        // 查询微信案件详情
+        queryWxCaseLog(context, params ={}) {
+            console.log('queryWxCaseLog--get--token', context.state.userInfo.token);
+            return axios({
+                headers: {
+                    'Authorization': context.state.userInfo.token || ''
+                },
+                method: 'post',
+                url: api.queryWxCaseLog,
+                data: params
+            }).then(res => {
+                console.log('queryWxCaseLog-----', res)
+                return res
+            }).catch(err => {
+                console.log('queryWxCaseLog----err', err)
+            });
+        },
     },
     getters: {}
 }

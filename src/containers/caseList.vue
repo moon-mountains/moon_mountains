@@ -51,7 +51,8 @@ export default {
         }
       })
     },
-    toCaseDetailPage() {
+    toCaseDetailPage(item) {
+      window.localStorage.setItem('caseNo', item.caseNo || '');
       this.$router.push("caseDetail");
     },
   },
