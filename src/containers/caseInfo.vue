@@ -118,13 +118,13 @@ export default {
       caseInfoForm: {
         openid: "",
         saleAgentNo: "",
-        caseInfoStatus: "",
+        caseInfoStatus: "0",
         salesmanName: "",
         insurePersion: "",
         linkPerson: "",
         insureHappenTime: "",
         accidentReason: "",
-        accidentDes: "0",
+        accidentDes: "",
       },
       renderPopList: [],
       reasonList: [
