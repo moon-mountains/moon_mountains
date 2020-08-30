@@ -140,8 +140,11 @@ export default {
   },
   computed: {
     ...mapState({
-      openid(state) {
-        return state.caseInfo.userInfo.openid || "";
+      // openid(state) {
+      //   return state.caseInfo.userInfo.openid || "";
+      // },
+      userInfo(state) {
+        return state.caseInfo.userInfo || {};
       },
     }),
   },
@@ -166,6 +169,12 @@ export default {
       });
     },
     getCode() {
+      // 判断是否有授权后用户信息,有信息则不再获取
+      if(this.userInfo.nickname) {
+        this.wxUserInfo = this.userInfo;
+        this.isShowAll = true;
+        return;
+      }
       // 非静默授权，第一次有弹框
       // 截取路径中的code，如果没有就去微信授权，如果已经获取到了就直接传code给后台获取openId
       const code = getUrlParams(this.$route.query) || "";
@@ -253,7 +262,6 @@ export default {
       this.isShowSelection = false;
     },
     onSubmit() {
-      this.caseInfoForm.openid = this.openid;
       console.log("onSubmit-----", this.caseInfoForm);
       this.saveReportCaseBaseInfo(this.caseInfoForm).then((data = {}) => {
         console.log("saveReportCaseBaseInfo-----", data);
