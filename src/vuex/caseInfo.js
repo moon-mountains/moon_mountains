@@ -31,10 +31,10 @@ const caseInfo = {
         },
         // 新增案件基本信息
         saveReportCaseBaseInfo(context, params ={}) {
-            console.log('--get--token', window.sessionStorage.getItem('token'));
+            console.log('--get--token', context.state.userInfo.token);
             return axios({
                 headers: {
-                    'Authorization': window.sessionStorage.getItem('token') || ''
+                    'Authorization': context.state.userInfo.token || ''
                 },
                 method: 'post',
                 url: api.saveReportCaseBaseInfo,
@@ -47,10 +47,10 @@ const caseInfo = {
             });
         },
         // 业务员
-        queryAllSalesman() {
+        queryAllSalesman(context) {
             return axios({
                 headers: {
-                    'Authorization': window.sessionStorage.getItem('token') || ''
+                    'Authorization': context.state.userInfo.token || ''
                 },
                 method: 'post',
                 url: api.queryAllSalesman
@@ -63,10 +63,10 @@ const caseInfo = {
         },
         // 查询微信案件列表
         queryWxCaseStatusList(context, params ={}) {
-            console.log('--get--token', window.sessionStorage.getItem('token'));
+            console.log('queryWxCaseStatusList--get--token', context.state.userInfo.token);
             return axios({
                 headers: {
-                    'Authorization': window.sessionStorage.getItem('token') || ''
+                    'Authorization': context.state.userInfo.token || ''
                 },
                 method: 'post',
                 url: api.queryWxCaseStatusList,
