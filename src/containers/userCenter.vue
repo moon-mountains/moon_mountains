@@ -1,7 +1,7 @@
 <template>
-  <section v-if="isShowAll">
+  <section v-if="!isShowAll">
     <van-nav-bar title="个人中心" />
-    <van-row class="m_t_5 b_g_white">
+    <van-row class="m_t_1 b_g_white">
       <van-col class="h_15" span="6">
         <div>
           <van-icon :name="wxUserInfo.headimgurl || ''" />
@@ -11,13 +11,13 @@
         <div>用户{{wxUserInfo.nickname || ''}}</div>
       </van-col>
     </van-row>
-    <van-row class="m_t_5 b_g_white">
-      <van-col class="h_15" span="6">
+    <van-row class="m_t_1 b_g_white">
+      <van-col span="6">
         <div>
           <van-icon :name="wxUserInfo.headimgurl || ''" />
         </div>
       </van-col>
-      <van-col class="h_15" span="18">
+      <van-col span="18">
         <van-cell-group>
           <van-cell @click="toCaseListPage" title="我的案件" value="" is-link />
         </van-cell-group>

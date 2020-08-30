@@ -12,7 +12,8 @@ const caseInfo = {
         }
     },
     actions: {
-        getWxUserInfo(context, params) {
+        // 用户信息
+        getWxUserInfo(context, params ={}) {
             return axios({
                 method: 'post',
                 url: api.getWxUserInfo,
@@ -28,7 +29,8 @@ const caseInfo = {
                 console.log('getWxUserInfo----err', err)
             });
         },
-        saveReportCaseBaseInfo(context, params) {
+        // 新增案件基本信息
+        saveReportCaseBaseInfo(context, params ={}) {
             console.log('--get--token', window.sessionStorage.getItem('token'));
             return axios({
                 headers: {
@@ -44,6 +46,7 @@ const caseInfo = {
                 console.log('saveReportCaseBaseInfo----err', err)
             });
         },
+        // 业务员
         queryAllSalesman() {
             return axios({
                 headers: {
@@ -56,6 +59,23 @@ const caseInfo = {
                 return res
             }).catch(err => {
                 console.log('queryAllSalesman----err', err)
+            });
+        },
+        // 查询微信案件列表
+        queryWxCaseStatusList(context, params ={}) {
+            console.log('--get--token', window.sessionStorage.getItem('token'));
+            return axios({
+                headers: {
+                    'Authorization': window.sessionStorage.getItem('token') || ''
+                },
+                method: 'post',
+                url: api.queryWxCaseStatusList,
+                data: params
+            }).then(res => {
+                console.log('queryWxCaseStatusList-----', res)
+                return res
+            }).catch(err => {
+                console.log('queryWxCaseStatusList----err', err)
             });
         },
     },

@@ -1,6 +1,6 @@
 <template>
   <section>
-    <van-nav-bar title="个人中心" />
+    <van-nav-bar title="案件列表" />
     <van-row class="m_t_2 b_g_white" v-for="(item, index) in caseList" :key="index">
       <van-col>
         <div class="h_117 f_4 m_l_5">案件号:{{item.caseNo}}</div>
@@ -15,6 +15,7 @@
 </template>
 
 <script>
+import { mapActions } from 'vuex';
 
 export default {
   data() {
@@ -31,8 +32,20 @@ export default {
       ]
     };
   },
-  created() {},
+  created() {
+    this.getqueryWxCaseStatusList()
+  },
   methods: {
+    ...mapActions(['queryWxCaseStatusList']),
+    getqueryWxCaseStatusList() {
+      this.queryWxCaseStatusList().then((data = {}) => {
+        if(data.code === 200) {
+          this.caseList = data.data || [];
+        }else {
+          this.$notify(data.message || '暂无数据');
+        }
+      })
+    },
     toCaseDetailPage() {
       this.$router.push("caseDetail");
     },
