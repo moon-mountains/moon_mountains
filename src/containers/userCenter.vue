@@ -54,6 +54,7 @@ export default {
       // 判断是否有授权后用户信息,有信息则不再获取
       if(this.userInfo.nickname) {
         this.wxUserInfo = this.userInfo;
+        this.isShowAll = true;
         return;
       }
       // 非静默授权，第一次有弹框
