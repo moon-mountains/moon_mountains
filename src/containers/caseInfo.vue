@@ -124,7 +124,7 @@ export default {
         linkPerson: "",
         insureHappenTime: "",
         accidentReason: "",
-        accidentDes: "",
+        accidentDes: "0",
       },
       renderPopList: [],
       reasonList: [
