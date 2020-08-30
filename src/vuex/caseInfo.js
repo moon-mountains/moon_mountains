@@ -3,7 +3,7 @@ import { api } from '../api/urls.js'
 const caseInfo = {
     state: {
         userInfo: {
-            openid: 123
+            openid: ''
         }
     },
     mutations: {

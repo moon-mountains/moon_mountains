@@ -1,10 +1,10 @@
 <template>
-  <section v-if="isShowAll">
+  <section v-if="!isShowAll">
     <van-form autocomplete="off" @submit="onSubmit">
       <!-- <van-field
         class="m_1"
         input-align="right"
-        v-model="caseInfoForm.salesmanName"
+        v-model="caseInfoForm.saleAgentName"
         name="业务员"
         label="业务员"
         placeholder="业务员"
@@ -14,8 +14,9 @@
       <van-cell
         class="m_1"
         title="业务员"
+        icon="../assets/logo.png"
         is-link
-        :value="caseInfoForm.salesmanName"
+        :value="caseInfoForm.saleAgentName"
         @click="showPop(1)"
       />
       <van-field
@@ -119,7 +120,7 @@ export default {
         openid: "",
         saleAgentNo: "",
         caseInfoStatus: "0",
-        salesmanName: "",
+        saleAgentName: "",
         insurePersion: "",
         linkPerson: "",
         insureHappenTime: "",
@@ -241,7 +242,7 @@ export default {
       switch (this.typeFlag) {
         case 1: {
           this.caseInfoForm.saleAgentNo = item.userId;
-          this.caseInfoForm.salesmanName = item.name;
+          this.caseInfoForm.saleAgentName = item.name;
           break;
         }
         case 2: {
