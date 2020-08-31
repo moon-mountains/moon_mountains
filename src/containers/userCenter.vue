@@ -28,7 +28,7 @@
         </div>
       </van-col>
       <van-col span="18">
-        <div class="my_case">
+        <div class="my_case" @click="toCaseListPage">
           <div>我的案件</div>
           <van-icon name="arrow" size=".4rem" color="#7c7c7d"/>
         </div>
