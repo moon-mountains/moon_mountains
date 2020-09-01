@@ -1,5 +1,5 @@
 <template>
-  <section v-if="isShowAll">
+  <section v-if="!isShowAll">
     <van-form autocomplete="off" @submit="onSubmit">
       <!-- <van-field
         class="m_1"
@@ -14,7 +14,6 @@
       <van-cell
         class="m_1"
         title="业务员"
-        icon="../assets/logo.png"
         is-link
         :value="caseInfoForm.saleAgentName"
         @click="showPop(1)"
