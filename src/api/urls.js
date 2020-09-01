@@ -4,7 +4,7 @@ exports.api = {
     // 用户信息
     getWxUserInfo: `${orign}/auth/wx/login`,
     // 业务员
-    queryAllSalesman: `${orign}/api/user/queryAllSalesman`,
+    queryAllSalesman: `${orign}/auth/wx/queryAllSalesman`,
     // 新增案件基本信息
     saveReportCaseBaseInfo: `${orign}/auth/wx/saveWxCaseBaseInfo`,
     // 查询微信案件列表
