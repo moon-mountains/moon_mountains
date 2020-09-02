@@ -59,9 +59,9 @@ export default {
       active: 3,
       caseStatus: '03',
       stepLineList: [ // 案件信息补充-01 现在指导客户-02，收集资料-03，定损-04，结案-05，拒赔-06，销案-07
-        {caseStatus: '01', lineClass: 'l_dis', text: '信息补充'},
-        {caseStatus: '02', lineClass: 'l_dis', text: '指导客户'},
-        {caseStatus: '03', lineClass: 'l_dis', text: '收集资料'},
+        {caseStatus: '01', lineClass: 'l_dis', text: '信息'},
+        {caseStatus: '02', lineClass: 'l_dis', text: '指导'},
+        {caseStatus: '03', lineClass: 'l_dis', text: '收集'},
         {caseStatus: '04', lineClass: 'l_dis', text: '定损'},
         {caseStatus: '05', lineClass: 'l_dis', text: '结案'},
         {caseStatus: '06', lineClass: 'l_dis', text: '拒赔'},
