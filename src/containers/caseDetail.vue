@@ -22,7 +22,7 @@
       <van-col class="b_1" :span="8">案件进行中</van-col>
       <van-col class="b_1" :span="8">玛雅日历</van-col>
     </van-row>-->
-    <van-steps :active="active" style="font-size:.3rem">
+    <van-steps :active="active" style="font-size:.2rem">
       <van-step v-for="(item, index) in stepLineList" :key="index">{{item.text}}</van-step>
     </van-steps>
     <van-cell-group>
