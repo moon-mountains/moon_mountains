@@ -1,7 +1,6 @@
 <template>
   <section>
     <van-nav-bar title="案件详情" />
-    <van-divider class="h_117 b_g_white" content-position="left">案件处理日志</van-divider>
     <!-- <div class="d_f">
       <div class="b_1">日期</div>
       <div class="b_1">案件状态</div>
@@ -25,6 +24,7 @@
     <van-steps :active="active" style="font-size:.2rem">
       <van-step v-for="(item, index) in stepLineList" :key="index">{{item.text}}</van-step>
     </van-steps>
+     <van-divider style="margin: .13rem 0" class="h_117 b_g_white" content-position="left">案件处理日志</van-divider>
     <van-cell-group>
       <van-cell title="案发日期:" :value="caseDetail.insureHappenTime || '--'" />
       <van-cell title="案件号码:" :value="caseDetail.caseNo || '--'" />
@@ -59,9 +59,9 @@ export default {
       active: 3,
       caseStatus: '03',
       stepLineList: [ // 案件信息补充-01 现在指导客户-02，收集资料-03，定损-04，结案-05，拒赔-06，销案-07
-        {caseStatus: '01', lineClass: 'l_dis', text: '信息'},
-        {caseStatus: '02', lineClass: 'l_dis', text: '指导'},
-        {caseStatus: '03', lineClass: 'l_dis', text: '收集'},
+        {caseStatus: '01', lineClass: 'l_dis', text: '补充信息'},
+        {caseStatus: '02', lineClass: 'l_dis', text: '指导客户'},
+        {caseStatus: '03', lineClass: 'l_dis', text: '收集资料'},
         {caseStatus: '04', lineClass: 'l_dis', text: '定损'},
         {caseStatus: '05', lineClass: 'l_dis', text: '结案'},
         {caseStatus: '06', lineClass: 'l_dis', text: '拒赔'},
