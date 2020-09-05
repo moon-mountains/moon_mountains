@@ -25,16 +25,12 @@
       <van-step v-for="(item, index) in renderStepList" :key="index">{{item.text}}</van-step>
     </van-steps>
      <van-divider style="margin: .13rem 0" class="h_117 b_g_white" content-position="left">案件处理日志</van-divider>
-    <van-cell-group>
-      <van-cell title="案发日期:" :value="caseDetail.insureHappenTime || '--'" />
-      <van-cell title="案件号码:" :value="caseDetail.caseNo || '--'" />
-      <van-cell title="案件ID:" :value="caseDetail.caseId || '--'" />
-      <van-cell title="被保人:" :value="caseDetail.insurePersion || '--'" />
-      <van-cell title="案件耗时:" :value="caseDetail.reportCaseTime || '--'" />
-      <van-cell title="所属部门:" :value="caseDetail.accidentReason || '--'" />
-      <van-cell title="联系人:" :value="caseDetail.linkPerson || '--'" />
-      <van-cell title="业务员编号:" :value="caseDetail.saleAgentNo || '--'" />
-      <van-cell title="事故描述:" :value="caseDetail.accidentDes || '--'" />
+    <van-cell-group v-for="(item, index) in caseDetailList" :key="index">
+      <van-cell title="案件号码:" :value="item.caseNo || '--'" />
+      <van-cell title="案件状态:" :value="item.caseStatus || '--'" />
+      <van-cell title="日志日期:" :value="item.caseLogDate || '--'" />
+      <van-cell title="日志描述:" :value="item.caseLogRemarks || '--'" />
+      <van-cell title="操作人员:" :value="item.operationName || '--'" />
     </van-cell-group>
   </section>
 </template>
@@ -45,17 +41,7 @@ import { mapActions } from "vuex";
 export default {
   data() {
     return {
-      caseDetail: {
-        // caseId: "202007221111111",
-        // caseNo: "我是测试",
-        // insurePersion: "被测试",
-        // insureHappenTime: "20303020102",
-        // reportCaseTime: 300,
-        // accidentReason: "",
-        // linkPerson: "联系人",
-        // accidentDes: "事故描述",
-        // saleAgentNo: "业务员编号",
-      },
+      caseDetailList: [],
       caseStatus: '07',
       endStepLineList: [
         {caseStatus: '05', lineClass: 'l_dis', text: '结案'},
@@ -68,25 +54,48 @@ export default {
         {caseStatus: '03', lineClass: 'l_dis', text: '收集资料'},
         {caseStatus: '04', lineClass: 'l_dis', text: '定损'},
       ],
-      renderStepList: []
+      renderStepList: [],
+      caseNo: window.localStorage.getItem("caseNo") || ""
     };
   },
   created() {
+    // 案件详情
     this.toqueryWxCaseLog();
+    // 步骤线
+    this.queryWxNewCaseStatus();
   },
   methods: {
-    ...mapActions(["queryWxCaseLog"]),
+    ...mapActions(["queryWxCaseLog", "queryWxNewCaseStatus"]),
     toqueryWxCaseLog() {
-      const caseNo = window.localStorage.getItem("caseNo") || "";
-      this.queryWxCaseLog({ caseNo }).then((data = {}) => {
+      this.queryWxCaseLog({ caseNo: this.caseNo }).then((data = {}) => {
+//         "data": [
+//   {
+//    "caseNo": "7518580652501893124439",
+//    "caseStatus": "01",
+//    "caseLogDate": "2020-09-06 01:44:47",
+//    "caseLogRemarks": "yyyyyy",
+//    "operationName": "admin"
+//   }
+//  ]
         if (data.code === 200) {
-          this.caseDetail = data.data || {};
-          console.log("caseDetail--", this.caseDetail);
+          this.caseDetailList = data.data || {};
+          console.log("caseDetailList--", this.caseDetailList);
+          this.renderline();
         } else {
           this.$notify(data.message || "暂无数据");
         }
       });
-      // --
+    },
+    queryWxNewCaseStatus() {
+      this.queryWxNewCaseStatus({ caseNo: this.caseNo }).then((data = {}) => {
+        if(data.code === 200) {
+          let res = data.data;
+          this.caseStatus = res.caseStatus || '';
+          this.renderline();
+        }
+      })
+    },
+    renderline() {
       let ob = this.endStepLineList.filter(item => {
         return item.caseStatus == this.caseStatus
       })
@@ -94,14 +103,10 @@ export default {
         ob.push(this.endStepLineList[0])
       }
       this.renderStepList = this.stepLineList.concat(ob);
-      // this.renderStepList.forEach(n => {
-      //   n.caseStatus = Number(n.caseStatus)
-      // })
-      // --
     },
-    toCaseDetailPage() {
-      this.$router.push("caseDetail");
-    },
+    // toCaseDetailPage() {
+    //   this.$router.push("caseDetailList");
+    // },
   },
 };
 </script>

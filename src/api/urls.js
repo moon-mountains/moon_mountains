@@ -11,4 +11,6 @@ exports.api = {
     queryWxCaseStatusList: `${orign}/auth/wx/queryWxCaseStatusList`,
     // 查询微信案件详情
     queryWxCaseLog: `${orign}/auth/wx/queryWxCaseLog`,
+    // 步骤线
+    queryWxNewCaseStatus: `${orign}/auth/wx/queryWxNewCaseStatus`,
 }
