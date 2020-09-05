@@ -21,8 +21,8 @@
       <van-col class="b_1" :span="8">案件进行中</van-col>
       <van-col class="b_1" :span="8">玛雅日历</van-col>
     </van-row>-->
-    <van-steps :active="active" style="font-size:.2rem">
-      <van-step v-for="(item, index) in stepLineList" :key="index">{{item.text}}</van-step>
+    <van-steps :active="caseStatus-1" style="font-size:.2rem">
+      <van-step v-for="(item, index) in renderStepList" :key="index">{{item.text}}</van-step>
     </van-steps>
      <van-divider style="margin: .13rem 0" class="h_117 b_g_white" content-position="left">案件处理日志</van-divider>
     <van-cell-group>
@@ -56,17 +56,19 @@ export default {
         // accidentDes: "事故描述",
         // saleAgentNo: "业务员编号",
       },
-      active: 3,
-      caseStatus: '03',
+      caseStatus: '07',
+      endStepLineList: [
+        {caseStatus: '05', lineClass: 'l_dis', text: '结案'},
+        {caseStatus: '06', lineClass: 'l_dis', text: '拒赔'},
+        {caseStatus: '07', lineClass: 'l_dis', text: '销案'},
+      ],
       stepLineList: [ // 案件信息补充-01 现在指导客户-02，收集资料-03，定损-04，结案-05，拒赔-06，销案-07
         {caseStatus: '01', lineClass: 'l_dis', text: '补充信息'},
         {caseStatus: '02', lineClass: 'l_dis', text: '指导客户'},
         {caseStatus: '03', lineClass: 'l_dis', text: '收集资料'},
         {caseStatus: '04', lineClass: 'l_dis', text: '定损'},
-        {caseStatus: '05', lineClass: 'l_dis', text: '结案'},
-        {caseStatus: '06', lineClass: 'l_dis', text: '拒赔'},
-        {caseStatus: '07', lineClass: 'l_dis', text: '销案'},
-      ]
+      ],
+      renderStepList: []
     };
   },
   created() {
@@ -84,6 +86,18 @@ export default {
           this.$notify(data.message || "暂无数据");
         }
       });
+      // --
+      let ob = this.endStepLineList.filter(item => {
+        return item.caseStatus == this.caseStatus
+      })
+      if(ob.length === 0) {
+        ob.push(this.endStepLineList[0])
+      }
+      this.renderStepList = this.stepLineList.concat(ob);
+      // this.renderStepList.forEach(n => {
+      //   n.caseStatus = Number(n.caseStatus)
+      // })
+      // --
     },
     toCaseDetailPage() {
       this.$router.push("caseDetail");
