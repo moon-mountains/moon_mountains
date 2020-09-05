@@ -24,7 +24,7 @@
     <van-steps :active="caseStatus-1" style="font-size:.2rem">
       <van-step v-for="(item, index) in renderStepList" :key="index">{{item.text}}</van-step>
     </van-steps>
-     <van-divider style="margin: .13rem 0" class="h_117 b_g_white" content-position="left">案件处理日志</van-divider>
+    <van-divider style="margin: .13rem 0" class="h_117 b_g_white" content-position="left">案件处理日志</van-divider>
     <van-cell-group v-for="(item, index) in caseDetailList" :key="index">
       <van-cell title="案件号码:" :value="item.caseNo || '--'" />
       <van-cell title="案件状态:" :value="item.caseStatus || '--'" />
@@ -42,43 +42,58 @@ export default {
   data() {
     return {
       caseDetailList: [],
-      caseStatus: '07',
+      caseStatus: "",
       endStepLineList: [
-        {caseStatus: '05', lineClass: 'l_dis', text: '结案'},
-        {caseStatus: '06', lineClass: 'l_dis', text: '拒赔'},
-        {caseStatus: '07', lineClass: 'l_dis', text: '销案'},
+        { caseStatus: "05", lineClass: "l_dis", text: "结案" },
+        { caseStatus: "06", lineClass: "l_dis", text: "拒赔" },
+        { caseStatus: "07", lineClass: "l_dis", text: "销案" },
       ],
-      stepLineList: [ // 案件信息补充-01 现在指导客户-02，收集资料-03，定损-04，结案-05，拒赔-06，销案-07
-        {caseStatus: '01', lineClass: 'l_dis', text: '补充信息'},
-        {caseStatus: '02', lineClass: 'l_dis', text: '指导客户'},
-        {caseStatus: '03', lineClass: 'l_dis', text: '收集资料'},
-        {caseStatus: '04', lineClass: 'l_dis', text: '定损'},
+      stepLineList: [
+        // 案件信息补充-01 现在指导客户-02，收集资料-03，定损-04，结案-05，拒赔-06，销案-07
+        { caseStatus: "01", lineClass: "l_dis", text: "补充信息" },
+        { caseStatus: "02", lineClass: "l_dis", text: "指导客户" },
+        { caseStatus: "03", lineClass: "l_dis", text: "收集资料" },
+        { caseStatus: "04", lineClass: "l_dis", text: "定损" },
       ],
       renderStepList: [],
-      caseNo: window.localStorage.getItem("caseNo") || ""
+      caseNo: window.localStorage.getItem("caseNo") || "",
     };
   },
   created() {
     // 案件详情
     this.toqueryWxCaseLog();
     // 步骤线
-    this.queryWxNewCaseStatus();
+    this.toqueryWxNewCaseStatus();
   },
   methods: {
     ...mapActions(["queryWxCaseLog", "queryWxNewCaseStatus"]),
     toqueryWxCaseLog() {
+      // this.caseDetailList = [{
+      //       caseNo: "7518580652501893124439",
+      //       caseStatus: "01",
+      //       caseLogDate: "2020-09-06 01:44:47",
+      //       caseLogRemarks: "yyyyyy",
+      //       operationName: "admin",
+      //     }];
       this.queryWxCaseLog({ caseNo: this.caseNo }).then((data = {}) => {
-//         "data": [
-//   {
-//    "caseNo": "7518580652501893124439",
-//    "caseStatus": "01",
-//    "caseLogDate": "2020-09-06 01:44:47",
-//    "caseLogRemarks": "yyyyyy",
-//    "operationName": "admin"
-//   }
-//  ]
+        //         "data": [
+        //   {
+        //    "caseNo": "7518580652501893124439",
+        //    "caseStatus": "01",
+        //    "caseLogDate": "2020-09-06 01:44:47",
+        //    "caseLogRemarks": "yyyyyy",
+        //    "operationName": "admin"
+        //   }
+        //  ]
         if (data.code === 200) {
-          this.caseDetailList = data.data || {};
+          // this.caseDetailList = data.data || {};
+          this.caseDetailList = [{
+            caseNo: "7518580652501893124439",
+            caseStatus: "01",
+            caseLogDate: "2020-09-06 01:44:47",
+            caseLogRemarks: "yyyyyy",
+            operationName: "admin",
+          }];
           console.log("caseDetailList--", this.caseDetailList);
           this.renderline();
         } else {
@@ -86,21 +101,21 @@ export default {
         }
       });
     },
-    queryWxNewCaseStatus() {
+    toqueryWxNewCaseStatus() {
       this.queryWxNewCaseStatus({ caseNo: this.caseNo }).then((data = {}) => {
-        if(data.code === 200) {
+        if (data.code === 200) {
           let res = data.data;
-          this.caseStatus = res.caseStatus || '';
+          this.caseStatus = res.caseStatus || "";
           this.renderline();
         }
-      })
+      });
     },
     renderline() {
-      let ob = this.endStepLineList.filter(item => {
-        return item.caseStatus == this.caseStatus
-      })
-      if(ob.length === 0) {
-        ob.push(this.endStepLineList[0])
+      let ob = this.endStepLineList.filter((item) => {
+        return item.caseStatus == this.caseStatus;
+      });
+      if (ob.length === 0) {
+        ob.push(this.endStepLineList[0]);
       }
       this.renderStepList = this.stepLineList.concat(ob);
     },
