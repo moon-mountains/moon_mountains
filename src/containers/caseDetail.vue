@@ -25,12 +25,13 @@
       <van-step v-for="(item, index) in renderStepList" :key="index">{{item.text}}</van-step>
     </van-steps>
     <van-divider style="margin: .13rem 0" class="h_117 b_g_white" content-position="left">案件处理日志</van-divider>
-    <van-cell-group v-for="(item, index) in caseDetailList" :key="index">
-      <van-cell title="案件号码:" :value="item.caseNo || '--'" />
-      <van-cell title="案件状态:" :value="item.caseStatus || '--'" />
-      <van-cell title="日志日期:" :value="item.caseLogDate || '--'" />
-      <van-cell title="日志描述:" :value="item.caseLogRemarks || '--'" />
-      <van-cell title="操作人员:" :value="item.operationName || '--'" />
+    <van-cell-group style="margin-top:.1rem" v-for="(item, index) in caseDetailList" :key="index">
+      <van-cell value-class="over_f_unset" title="案件号码:" :value="item.caseNo || '--'" />
+      <van-cell value-class="over_f_unset" title="案件状态:" :value="translateStatus(item.caseStatus)" />
+      <van-cell value-class="over_f_unset" title="日志日期:" :value="item.caseLogDate || '--'" />
+      <van-cell value-class="over_f_unset" title="日志描述:" :value="item.caseLogRemarks || '--'" />
+      <van-cell value-class="over_f_unset" title="操作人员:" :value="item.operationName || '--'" />
+      <!-- <van-divider /> -->
     </van-cell-group>
   </section>
 </template>
@@ -56,10 +57,12 @@ export default {
         { caseStatus: "04", lineClass: "l_dis", text: "定损" },
       ],
       renderStepList: [],
+      allCaseStatusList: [],
       caseNo: window.localStorage.getItem("caseNo") || "",
     };
   },
   created() {
+    this.allCaseStatusList = this.stepLineList.concat(this.endStepLineList);
     // 案件详情
     this.toqueryWxCaseLog();
     // 步骤线
@@ -74,26 +77,17 @@ export default {
       //       caseLogDate: "2020-09-06 01:44:47",
       //       caseLogRemarks: "yyyyyy",
       //       operationName: "admin",
+      //     },
+      //     {
+      //       caseNo: "7518580652501893124439",
+      //       caseStatus: "01",
+      //       caseLogDate: "2020-09-06 01:44:47",
+      //       caseLogRemarks: "yyyyyy",
+      //       operationName: "admin",
       //     }];
       this.queryWxCaseLog({ caseNo: this.caseNo }).then((data = {}) => {
-        //         "data": [
-        //   {
-        //    "caseNo": "7518580652501893124439",
-        //    "caseStatus": "01",
-        //    "caseLogDate": "2020-09-06 01:44:47",
-        //    "caseLogRemarks": "yyyyyy",
-        //    "operationName": "admin"
-        //   }
-        //  ]
         if (data.code === 200) {
-          // this.caseDetailList = data.data || {};
-          this.caseDetailList = [{
-            caseNo: "7518580652501893124439",
-            caseStatus: "01",
-            caseLogDate: "2020-09-06 01:44:47",
-            caseLogRemarks: "yyyyyy",
-            operationName: "admin",
-          }];
+          this.caseDetailList = data.data || {};
           console.log("caseDetailList--", this.caseDetailList);
           this.renderline();
         } else {
@@ -119,9 +113,15 @@ export default {
       }
       this.renderStepList = this.stepLineList.concat(ob);
     },
-    // toCaseDetailPage() {
-    //   this.$router.push("caseDetailList");
-    // },
+    translateStatus(caseStatus) {
+      let text = '';
+      this.allCaseStatusList.forEach(n => {
+        if(n.caseStatus === caseStatus){
+          text = n.text
+        }
+      })
+      return text
+    }
   },
 };
 </script>

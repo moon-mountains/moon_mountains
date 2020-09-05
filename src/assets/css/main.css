@@ -62,3 +62,6 @@ html,body{
 .t_a_c{
     text-align: center;
 }
+.over_f_unset{
+    overflow: unset;
+}
