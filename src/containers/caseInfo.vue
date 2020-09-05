@@ -60,24 +60,22 @@
         />
       </van-popup>
 
-      <!-- <van-field
+      <van-field
         class="m_1"
         input-align="right"
         v-model="caseInfoForm.accidentReason"
-        is-link
-        @focus.prevent="isShowSelection = true"
         name="事故原因"
         label="事故原因"
         placeholder="事故原因"
         :rules="[{ required: true, message: '请填写事故原因' }]"
-      />-->
-      <van-cell
+      />
+      <!-- <van-cell
         class="m_1"
         title="事故原因"
         is-link
         :value="caseInfoForm.accidentReason"
         @click="showPop(2)"
-      />
+      /> -->
       <van-field
         class="m_1"
         input-align="right"
