@@ -39,7 +39,7 @@
       <van-field
         class="m_1"
         input-align="right"
-        v-model="caseInfoForm.linkMobile"
+        v-model="caseInfoForm.customerPhone"
         name="联系人电话"
         label="联系人电话"
         placeholder="联系人电话"
@@ -129,7 +129,7 @@ export default {
         saleAgentName: "",
         insurePersion: "",
         linkPerson: "",
-        linkMobile: "",
+        customerPhone: "",
         insureHappenTime: "",
         accidentReason: "",
         accidentDes: "",
