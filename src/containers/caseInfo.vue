@@ -1,5 +1,5 @@
 <template>
-  <section v-if="isShowAll">
+  <section v-if="!isShowAll">
     <van-form autocomplete="off" @submit="onSubmit">
       <!-- <van-field
         class="m_1"
@@ -36,6 +36,15 @@
         placeholder="联系人"
         :rules="[{ required: true, message: '请填写联系人' }]"
       />
+      <van-field
+        class="m_1"
+        input-align="right"
+        v-model="caseInfoForm.linkMobile"
+        name="联系人电话"
+        label="联系人电话"
+        placeholder="联系人电话"
+        :rules="[{ required: true, message: '请填写联系人电话' }]"
+      />
       <!-- <van-field
         class="m_1"
         input-align="right"
@@ -49,8 +58,8 @@
       <van-popup v-model="showTime" position="bottom">
         <van-datetime-picker
           v-model="currentDate"
-          type="datetime"
-          title="选择年月日"
+          type="datehour"
+          title="选择年月日小时"
           :min-date="minDate"
           :max-date="maxDate"
           :loading="isLoadingShow"
@@ -80,9 +89,9 @@
         class="m_1"
         input-align="right"
         v-model="caseInfoForm.accidentDes"
-        name="事故描述"
-        label="事故描述"
-        placeholder="事故描述"
+        name="成事故经过"
+        label="成事故经过"
+        placeholder="成事故经过"
       />
       <van-action-sheet
         v-model="isShowSelection"
@@ -120,6 +129,7 @@ export default {
         saleAgentName: "",
         insurePersion: "",
         linkPerson: "",
+        linkMobile: "",
         insureHappenTime: "",
         accidentReason: "",
         accidentDes: "",
@@ -211,8 +221,8 @@ export default {
       let month = val.getMonth() + 1;
       let day = val.getDate();
       let hour = val.getHours()
-      let minute = val.getMinutes()
-      let second = val.getSeconds()
+      // let minute = val.getMinutes()
+      // let second = val.getSeconds()
       if (month >= 1 && month <= 9) {
         month = `0${month}`;
       }
@@ -220,11 +230,11 @@ export default {
         day = `0${day}`;
       }
       if (hour >= 0 && hour <= 9) { hour = `0${hour}` }
-      if (minute >= 0 && minute <= 9) { minute = `0${minute}` }
-      if (second >= 0 && second <= 9) { second = `0${second}` }
+      // if (minute >= 0 && minute <= 9) { minute = `0${minute}` }
+      // if (second >= 0 && second <= 9) { second = `0${second}` }
       // this.className = 'timeClass'
-      // this.timeValue = `${year}-${month}-${day} ${hour}:${minute}`
-      this.caseInfoForm.insureHappenTime = `${year}-${month}-${day} ${hour}:${minute}:${second}`;
+      this.caseInfoForm.insureHappenTime = `${year}-${month}-${day} ${hour}`
+      // this.caseInfoForm.insureHappenTime = `${year}-${month}-${day} ${hour}:${minute}:${second}`;
       this.showTime = false;
     },
     // 选项格式化函数
@@ -237,11 +247,12 @@ export default {
         return `${value}日`;
       } else if (type === "hour") {
         return `${value}时`;
-      } else if (type === "minute") {
-        return `${value}分`;
-      } else if (type === "second") {
-        return `${value}秒`;
-      }
+      } 
+      // else if (type === "minute") {
+      //   return `${value}分`;
+      // } else if (type === "second") {
+      //   return `${value}秒`;
+      // }
       return value;
     },
     selectReason(item) {
