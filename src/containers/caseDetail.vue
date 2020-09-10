@@ -1,32 +1,13 @@
 <template>
   <section>
     <van-nav-bar title="案件详情" />
-    <!-- <div class="d_f">
-      <div class="b_1">日期</div>
-      <div class="b_1">案件状态</div>
-      <div class="b_1">备注</div>
-    </div>
-    <div class="d_f">
-      <div class="b_1">2012-12-25</div>
-      <div class="b_1">案件进行中</div>
-      <div class="b_1">玛雅日历</div>
-    </div>-->
-    <!-- <van-row class="t_a_c b_g_white">
-      <van-col class="b_1" :span="8">日期</van-col>
-      <van-col class="b_1" :span="8">案件状态</van-col>
-      <van-col class="b_1" :span="8">备注</van-col>
-    </van-row>
-    <van-row class="t_a_c b_g_white">
-      <van-col class="b_1" :span="8">2012-12-25</van-col>
-      <van-col class="b_1" :span="8">案件进行中</van-col>
-      <van-col class="b_1" :span="8">玛雅日历</van-col>
-    </van-row>-->
-    <van-steps :active="caseStatus-1" style="font-size:.2rem">
+    <van-steps :active="sureActiv()-1" direction="vertical" style="font-size:.2rem">
       <van-step v-for="(item, index) in renderStepList" :key="index">{{item.text}}</van-step>
     </van-steps>
     <van-divider style="margin: .13rem 0" class="h_117 b_g_white" content-position="left">案件处理日志</van-divider>
     <van-cell-group style="margin-top:.1rem" v-for="(item, index) in caseDetailList" :key="index">
       <van-cell value-class="over_f_unset" title="案件号码:" :value="item.caseNo || '--'" />
+      <van-cell value-class="over_f_unset" title="报案时间:" :value="item.reportCaseTime || '--'" />
       <van-cell value-class="over_f_unset" title="案件状态:" :value="translateStatus(item.caseStatus)" />
       <van-cell value-class="over_f_unset" title="日志日期:" :value="item.caseLogDate || '--'" />
       <van-cell value-class="over_f_unset" title="日志描述:" :value="item.caseLogRemarks || '--'" />
@@ -43,18 +24,22 @@ export default {
   data() {
     return {
       caseDetailList: [],
-      caseStatus: "",
+      caseStatus: "04",
       endStepLineList: [
-        { caseStatus: "05", lineClass: "l_dis", text: "结案" },
-        { caseStatus: "06", lineClass: "l_dis", text: "拒赔" },
-        { caseStatus: "07", lineClass: "l_dis", text: "销案" },
+        [
+          { caseStatus: "05", lineClass: "l_dis", text: "结案" },
+          { caseStatus: "08", lineClass: "l_dis", text: "结案待审核" }
+        ],
+        [{ caseStatus: "07", lineClass: "l_dis", text: "销除案件" }],
+        [{ caseStatus: "06", lineClass: "l_dis", text: "案件拒赔" }]
       ],
       stepLineList: [
-        // 案件信息补充-01 现在指导客户-02，收集资料-03，定损-04，结案-05，拒赔-06，销案-07
-        { caseStatus: "01", lineClass: "l_dis", text: "补充信息" },
-        { caseStatus: "02", lineClass: "l_dis", text: "指导客户" },
-        { caseStatus: "03", lineClass: "l_dis", text: "收集资料" },
-        { caseStatus: "04", lineClass: "l_dis", text: "定损" },
+        // 案件信息补充-01 现在指导客户-02，收集资料-03，收集资料待审核-031，定损-04，结案-05，拒赔-06，销案-07，结案待审核-08
+        { caseStatus: "01", lineClass: "l_dis", text: "案件信息补充" },
+        { caseStatus: "02", lineClass: "l_dis", text: "现场指导客户" },
+        { caseStatus: "03", lineClass: "l_dis", text: "案件资料收集" },
+        { caseStatus: "031", lineClass: "l_dis", text: "收集资料待审核" },
+        { caseStatus: "04", lineClass: "l_dis", text: "案件定损" },
       ],
       renderStepList: [],
       allCaseStatusList: [],
@@ -62,29 +47,19 @@ export default {
     };
   },
   created() {
-    this.allCaseStatusList = this.stepLineList.concat(this.endStepLineList);
+    // this.allCaseStatusList = this.stepLineList.concat(this.endStepLineList);
     // 案件详情
     this.toqueryWxCaseLog();
     // 步骤线
     this.toqueryWxNewCaseStatus();
+    this.renderline();
   },
   methods: {
     ...mapActions(["queryWxCaseLog", "queryWxNewCaseStatus"]),
+    sureActiv() {
+      return this.renderStepList.length > 5 ? this.renderStepList.length : this.caseStatus
+    },
     toqueryWxCaseLog() {
-      // this.caseDetailList = [{
-      //       caseNo: "7518580652501893124439",
-      //       caseStatus: "01",
-      //       caseLogDate: "2020-09-06 01:44:47",
-      //       caseLogRemarks: "yyyyyy",
-      //       operationName: "admin",
-      //     },
-      //     {
-      //       caseNo: "7518580652501893124439",
-      //       caseStatus: "01",
-      //       caseLogDate: "2020-09-06 01:44:47",
-      //       caseLogRemarks: "yyyyyy",
-      //       operationName: "admin",
-      //     }];
       this.queryWxCaseLog({ caseNo: this.caseNo }).then((data = {}) => {
         if (data.code === 200) {
           this.caseDetailList = data.data || {};
@@ -105,13 +80,25 @@ export default {
       });
     },
     renderline() {
-      let ob = this.endStepLineList.filter((item) => {
-        return item.caseStatus == this.caseStatus;
-      });
-      if (ob.length === 0) {
-        ob.push(this.endStepLineList[0]);
+      switch (this.caseStatus) {
+        case '05':
+        case '08':
+        {
+          this.stepLineList = this.stepLineList.concat(this.endStepLineList[0])
+          break;
+        }
+        case '06':
+        {
+          this.stepLineList = this.stepLineList.concat(this.endStepLineList[1])
+          break;
+        }
+        case '07':
+        {
+          this.stepLineList = this.stepLineList.concat(this.endStepLineList[2])
+          break;
+        }
       }
-      this.renderStepList = this.stepLineList.concat(ob);
+      this.renderStepList = this.stepLineList;
     },
     translateStatus(caseStatus) {
       let text = '';
