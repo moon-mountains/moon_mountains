@@ -24,7 +24,7 @@ export default {
   data() {
     return {
       caseDetailList: [],
-      caseStatus: "04",
+      caseStatus: "",
       endStepLineList: [
         [
           { caseStatus: "05", lineClass: "l_dis", text: "结案" },

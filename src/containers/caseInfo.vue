@@ -89,9 +89,9 @@
         class="m_1"
         input-align="right"
         v-model="caseInfoForm.accidentDes"
-        name="成事故经过"
-        label="成事故经过"
-        placeholder="成事故经过"
+        name="事故经过"
+        label="事故经过"
+        placeholder="事故经过"
       />
       <van-action-sheet
         v-model="isShowSelection"
