@@ -1,7 +1,7 @@
 <template>
   <section>
     <van-nav-bar title="案件详情" />
-    <van-steps :active="sureActiv()-1" direction="vertical" style="font-size:.2rem">
+    <van-steps :active="sureActiv" direction="vertical" style="font-size:.2rem">
       <van-step v-for="(item, index) in renderStepList" :key="index">{{item.text}}</van-step>
     </van-steps>
     <van-divider style="margin: .13rem 0" class="h_117 b_g_white" content-position="left">案件处理日志</van-divider>
@@ -24,22 +24,21 @@ export default {
   data() {
     return {
       caseDetailList: [],
-      caseStatus: "",
+      caseStatus: "0",
       endStepLineList: [
-        [
-          { caseStatus: "05", lineClass: "l_dis", text: "结案" },
-          { caseStatus: "08", lineClass: "l_dis", text: "结案待审核" }
-        ],
-        [{ caseStatus: "07", lineClass: "l_dis", text: "销除案件" }],
-        [{ caseStatus: "06", lineClass: "l_dis", text: "案件拒赔" }]
+        [{ caseStatus: "05", lineClass: "l_dis", text: "结案" }],
+        [{ caseStatus: "06", lineClass: "l_dis", text: "案件拒赔" }],
+        [{ caseStatus: "07", lineClass: "l_dis", text: "销除案件" }]
       ],
       stepLineList: [
-        // 案件信息补充-01 现在指导客户-02，收集资料-03，收集资料待审核-031，定损-04，结案-05，拒赔-06，销案-07，结案待审核-08
+        // 案件状态: 案件信息补充-01 现在指导客户-02，收集资料-03，资料待审核-031 资料审核不通过-032 定损-04，结案-05，拒赔-06，销案-07 结案待审核-08 结案审核不通过-09
+        { caseStatus: "0", lineClass: "l_dis", text: "案件待处理" },
         { caseStatus: "01", lineClass: "l_dis", text: "案件信息补充" },
         { caseStatus: "02", lineClass: "l_dis", text: "现场指导客户" },
         { caseStatus: "03", lineClass: "l_dis", text: "案件资料收集" },
         { caseStatus: "031", lineClass: "l_dis", text: "收集资料待审核" },
         { caseStatus: "04", lineClass: "l_dis", text: "案件定损" },
+        { caseStatus: "08", lineClass: "l_dis", text: "案件待审核" }
       ],
       renderStepList: [],
       allCaseStatusList: [],
@@ -54,11 +53,21 @@ export default {
     this.toqueryWxNewCaseStatus();
     this.renderline();
   },
+  computed: {
+    sureActiv() {
+      // return this.renderStepList.length > 6 ? this.renderStepList.length : this.caseStatus
+      let index = 0;
+      for(let i = 0; i < this.renderStepList.length; i++) {
+        if(this.renderStepList[i].caseStatus === this.caseStatus) {
+          index = i;
+          break;
+        }
+      }
+      return index;
+    }
+  },
   methods: {
     ...mapActions(["queryWxCaseLog", "queryWxNewCaseStatus"]),
-    sureActiv() {
-      return this.renderStepList.length > 5 ? this.renderStepList.length : this.caseStatus
-    },
     toqueryWxCaseLog() {
       this.queryWxCaseLog({ caseNo: this.caseNo }).then((data = {}) => {
         if (data.code === 200) {
@@ -81,8 +90,17 @@ export default {
     },
     renderline() {
       switch (this.caseStatus) {
+        case '032':
+        {
+          this.stepLineList.splice(5, 0, { caseStatus: "032", lineClass: "l_dis", text: "资料审核不通过" });
+          break;
+        }
+        case '09':
+        {
+          this.stepLineList.push({ caseStatus: "09", lineClass: "l_dis", text: "案件审核不通过" });
+          break;
+        }
         case '05':
-        case '08':
         {
           this.stepLineList = this.stepLineList.concat(this.endStepLineList[0])
           break;
