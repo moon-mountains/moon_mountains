@@ -18,7 +18,7 @@
         :value="caseInfoForm.saleAgentName"
         @click="showPop(1)"
       />
-      <van-field
+      <!-- <van-field
         class="m_1"
         input-align="right"
         v-model="caseInfoForm.insurePersion"
@@ -26,7 +26,7 @@
         label="公司名称"
         placeholder="公司名称"
         :rules="[{ required: true, message: '请填写公司名称' }]"
-      />
+      /> -->
       <van-field
         class="m_1"
         input-align="right"
