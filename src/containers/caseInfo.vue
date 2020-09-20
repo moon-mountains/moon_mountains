@@ -58,7 +58,7 @@
       <van-popup v-model="showTime" position="bottom">
         <van-datetime-picker
           v-model="currentDate"
-          type="datehour"
+          type="datetime"
           title="选择年月日小时"
           :min-date="minDate"
           :max-date="maxDate"
@@ -221,8 +221,8 @@ export default {
       let month = val.getMonth() + 1;
       let day = val.getDate();
       let hour = val.getHours()
-      // let minute = val.getMinutes()
-      // let second = val.getSeconds()
+      let minute = val.getMinutes()
+      let second = val.getSeconds()
       if (month >= 1 && month <= 9) {
         month = `0${month}`;
       }
@@ -230,11 +230,11 @@ export default {
         day = `0${day}`;
       }
       if (hour >= 0 && hour <= 9) { hour = `0${hour}` }
-      // if (minute >= 0 && minute <= 9) { minute = `0${minute}` }
-      // if (second >= 0 && second <= 9) { second = `0${second}` }
+      if (minute >= 0 && minute <= 9) { minute = `0${minute}` }
+      if (second >= 0 && second <= 9) { second = `0${second}` }
       // this.className = 'timeClass'
-      this.caseInfoForm.insureHappenTime = `${year}-${month}-${day} ${hour}`
-      // this.caseInfoForm.insureHappenTime = `${year}-${month}-${day} ${hour}:${minute}:${second}`;
+      // this.caseInfoForm.insureHappenTime = `${year}-${month}-${day} ${hour}`
+      this.caseInfoForm.insureHappenTime = `${year}-${month}-${day} ${hour}:${minute}:${second}`;
       this.showTime = false;
     },
     // 选项格式化函数
