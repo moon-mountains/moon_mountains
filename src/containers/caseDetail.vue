@@ -129,7 +129,7 @@ export default {
     },
     translateStatus(caseStatus) {
       let text = '';
-      this.allCaseStatusList.forEach(n => {
+      this.renderStepList.forEach(n => {
         if(n.caseStatus === caseStatus){
           text = n.text
         }
