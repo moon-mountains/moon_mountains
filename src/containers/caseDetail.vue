@@ -26,19 +26,38 @@ export default {
       caseDetailList: [],
       caseStatus: "0",
       endStepLineList: [
-        [{ caseStatus: "05", lineClass: "l_dis", text: "结案" }],
-        [{ caseStatus: "06", lineClass: "l_dis", text: "案件拒赔" }],
-        [{ caseStatus: "07", lineClass: "l_dis", text: "销除案件" }]
+        [{ caseStatus: "08", lineClass: "l_dis", text: "结案" }],
+        [{ caseStatus: "09", lineClass: "l_dis", text: "拒赔" }],
+        [{ caseStatus: "10", lineClass: "l_dis", text: "销案" }]
       ],
       stepLineList: [
-        // 案件状态: 案件信息补充-01 现在指导客户-02，收集资料-03，资料待审核-031 资料审核不通过-032 定损-04，结案-05，拒赔-06，销案-07 结案待审核-08 结案审核不通过-09
+        // 1.案件信息补充提交后流转到下一个状态
+        // 2.现场指导客户完成后跳转下一个状态
+        // 3.收集资料中，用户开始上传资料等，提交收集资料后锁定信息，跳转到下一个状态
+        // 4.收集资料待审核，等待管理员审核
+        // 5.资料审核通过后，状态为待定损，（审核不通过状态变为收集资料中，解锁页面让用户重新填写资料），
+        // 6.用户定损完成后状态为定损，
+        // 7.用户填写完结案信息提交审核后，状态为结案待审核
+        // 8.结案审核通过后，状态变为结案或者拒赔,销案。（结案审核不通过状态变为定损）
+        // // 案件状态:
+        // 案件信息补充-01 
+        // 现在指导客户-02 
+        // 收集资料中-03 
+        // 收集资料待审核-04 (审核不通过变为-03) 
+        // 待定损-05 
+        // 定损-06 
+        // 结案待审核-07
+        // 结案-08（结案审核不通变为定损-06）
+        // 拒赔-09 
+        // 销案-10 
         { caseStatus: "0", lineClass: "l_dis", text: "案件待处理" },
         { caseStatus: "01", lineClass: "l_dis", text: "案件信息补充" },
         { caseStatus: "02", lineClass: "l_dis", text: "现场指导客户" },
-        { caseStatus: "03", lineClass: "l_dis", text: "案件资料收集" },
-        { caseStatus: "031", lineClass: "l_dis", text: "收集资料待审核" },
-        { caseStatus: "04", lineClass: "l_dis", text: "案件定损" },
-        { caseStatus: "08", lineClass: "l_dis", text: "案件待审核" }
+        { caseStatus: "03", lineClass: "l_dis", text: "收集资料中" },
+        { caseStatus: "04", lineClass: "l_dis", text: "收集资料待审核" },
+        { caseStatus: "05", lineClass: "l_dis", text: "待定损" },
+        { caseStatus: "06", lineClass: "l_dis", text: "定损" },
+        { caseStatus: "07", lineClass: "l_dis", text: "结案待审核" }
       ],
       renderStepList: [],
       allCaseStatusList: [],
@@ -73,7 +92,7 @@ export default {
         if (data.code === 200) {
           this.caseDetailList = data.data || {};
           console.log("caseDetailList--", this.caseDetailList);
-          this.renderline();
+          // this.renderline();
         } else {
           this.$notify(data.message || "暂无数据");
         }
@@ -90,29 +109,19 @@ export default {
     },
     renderline() {
       switch (this.caseStatus) {
-        case '032':
+        case '08':
         {
-          this.stepLineList.splice(5, 0, { caseStatus: "032", lineClass: "l_dis", text: "资料审核不通过" });
+          this.stepLineList.push(this.endStepLineList[0][0])
           break;
         }
         case '09':
         {
-          this.stepLineList.push({ caseStatus: "09", lineClass: "l_dis", text: "案件审核不通过" });
+          this.stepLineList.push(this.endStepLineList[1][0])
           break;
         }
-        case '05':
+        case '10':
         {
-          this.stepLineList = this.stepLineList.concat(this.endStepLineList[0])
-          break;
-        }
-        case '06':
-        {
-          this.stepLineList = this.stepLineList.concat(this.endStepLineList[1])
-          break;
-        }
-        case '07':
-        {
-          this.stepLineList = this.stepLineList.concat(this.endStepLineList[2])
+          this.stepLineList.push(this.endStepLineList[2][0])
           break;
         }
       }
