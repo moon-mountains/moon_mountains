@@ -8,7 +8,7 @@
     <van-cell-group style="margin-top:.1rem" v-for="(item, index) in caseDetailList" :key="index">
       <van-cell value-class="over_f_unset" title="案件号码:" :value="item.caseNo || '--'" />
       <van-cell value-class="over_f_unset" title="报案时间:" :value="item.reportCaseTime || '--'" />
-      <van-cell value-class="over_f_unset" title="案件状态:" :value="translateStatus(item.caseStatus)" />
+      <!-- <van-cell value-class="over_f_unset" title="案件状态:" :value="translateStatus(item.caseStatus)" /> -->
       <van-cell value-class="over_f_unset" title="日志日期:" :value="item.caseLogDate || '--'" />
       <van-cell value-class="over_f_unset" title="日志描述:" :value="item.caseLogRemarks || '--'" />
       <van-cell value-class="over_f_unset" title="操作人员:" :value="item.operationName || '--'" />
