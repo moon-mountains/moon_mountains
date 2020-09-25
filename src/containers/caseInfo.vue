@@ -1,5 +1,5 @@
 <template>
-  <section v-if="isShowAll">
+  <section v-if="!isShowAll">
     <van-form autocomplete="off" @submit="onSubmit">
       <!-- <van-field
         class="m_1"
@@ -11,14 +11,23 @@
         @click="isShowSelection = true" 
         :rules="[{ required: true, message: '请填写业务员名' }]"
       />-->
-      <van-cell
+      <!-- <van-cell
         class="m_1"
         title="业务员"
         is-link
         :value="caseInfoForm.saleAgentName"
         @click="showPop(1)"
+      /> -->
+      <van-field
+        class="m_1"
+        input-align="right"
+        v-model="caseInfoForm.saleAgentName"
+        name="业务员"
+        label="业务员"
+        placeholder="业务员"
+        :rules="[{ required: true, message: '请填写业务员' }]"
       />
-      <!-- <van-field
+      <van-field
         class="m_1"
         input-align="right"
         v-model="caseInfoForm.insurePersion"
@@ -26,7 +35,7 @@
         label="公司名称"
         placeholder="公司名称"
         :rules="[{ required: true, message: '请填写公司名称' }]"
-      /> -->
+      />
       <van-field
         class="m_1"
         input-align="right"
@@ -275,7 +284,9 @@ export default {
         console.log("saveReportCaseBaseInfo-----", data);
         if (data.code === 200) {
           this.$router.push("userCenter");
-        } else {
+        } if(data.code == '-2') {
+          this.$notify(data.message || "请填写正确的业务员");
+        }else {
           this.$notify(data.message || "提交失败了");
         }
         // this.$router.push("userCenter");
