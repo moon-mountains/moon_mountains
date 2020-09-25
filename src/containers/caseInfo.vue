@@ -1,5 +1,5 @@
 <template>
-  <section v-if="!isShowAll">
+  <section v-if="isShowAll">
     <van-form autocomplete="off" @submit="onSubmit">
       <!-- <van-field
         class="m_1"
