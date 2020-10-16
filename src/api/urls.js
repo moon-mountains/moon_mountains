@@ -1,5 +1,6 @@
-console.log('---process.env', process.env)
-const orign = process.env.NODE_ENV === 'product'? 'http://47.106.183.152:8088': 'http://47.106.183.152:8088'
+console.log('---process.env', process.env.VUE_APP_BASE_URL)
+// const orign = process.env.NODE_ENV === 'product'? 'http://47.106.183.152:8088': 'http://47.106.183.152:8088'
+const orign = process.env.VUE_APP_BASE_URL;
 exports.api = {
     // 用户信息
     getWxUserInfo: `${orign}/auth/wx/login`,

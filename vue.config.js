@@ -1,7 +1,8 @@
 module.exports = {
-    publicPath: "./",
-    // baseUrl: "./",
-    configureWebpack: {
-      devtool: 'source-map'
-    }
+  publicPath: "./",
+  // baseUrl: "./",
+  outputDir: process.env.outputDir, 
+  configureWebpack: {
+    devtool: 'source-map'
+  }
 }
