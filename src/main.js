@@ -8,7 +8,7 @@ import axios from 'axios';
 // import App from './App.vue'
 import VueRouter from 'vue-router'
 import router from './router/router.js'
-import Vconsole from 'vconsole';
+// import Vconsole from 'vconsole';
 
 // Vue.config.productionTip = false
 const originalPush = VueRouter.prototype.push
@@ -47,7 +47,7 @@ axios.interceptors.response.use(response => {
 Vue.use(VueRouter)
 Vue.use(axios)
 Vue.use(Vant)
-Vue.use(new Vconsole())
+// Vue.use(new Vconsole());
 
 router.beforeEach((to, from, next) => {
   console.log('--router to', to.fullPath)
