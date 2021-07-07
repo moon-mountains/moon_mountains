@@ -14,4 +14,12 @@ exports.api = {
     queryWxCaseLog: `${orign}/auth/wx/queryWxCaseLog`,
     // 步骤线
     queryWxNewCaseStatus: `${orign}/auth/wx/queryWxNewCaseStatus`,
+    //验证码
+    verifyCode: `${orign}/auth/code`,
+    //微信用户取消绑定
+    deleteWxUserRelation: `${orign}/api/wx/deleteWxUserRelation`,
+    //微信用户绑定
+    wxUserRelation: `${orign}/api/wx/wxUserRelation`,
+    //微信用户案件转接绑定
+    wxCaseBaseInfoRelation: `${orign}/auth/wx/wxCaseBaseInfoRelation`,
 }

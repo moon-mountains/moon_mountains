@@ -20,10 +20,7 @@
       <van-col span="6">
         <div class="head_b_img_b" v-if="wxUserInfo.headimgurl">
           <div class="head_b">
-            <img
-              class="head_b_img"
-              :src="wxUserInfo.headimgurl"
-            />
+            <van-icon name="orders-o" size="0.6rem"/>
           </div>
         </div>
       </van-col>
@@ -34,13 +31,42 @@
         </div>
       </van-col>
     </van-row>
+    <van-row class="m_t_1 b_g_white">
+      <van-col span="6">
+        <div class="head_b_img_b" v-if="wxUserInfo.headimgurl">
+          <div class="head_b">
+            <van-icon name="records" size="0.6rem"/>
+          </div>
+        </div>
+      </van-col>
+      <van-col span="18">
+        <div class="my_case" @click="toCaseRelationPage">
+          <div>案件转接</div>
+          <van-icon name="arrow" size=".4rem" color="#7c7c7d"/>
+        </div>
+      </van-col>
+    </van-row>
+    <van-row class="m_t_1 b_g_white">
+      <van-col span="6">
+        <div class="head_b_img_b" v-if="wxUserInfo.headimgurl">
+          <div class="head_b">
+            <van-icon name="manager-o" size="0.6rem"/>
+          </div>
+        </div>
+      </van-col>
+      <van-col span="18">
+        <div class="my_case" @click="toUserRelationPage">
+          <div>账号绑定</div>
+          <van-icon name="arrow" size=".4rem" color="#7c7c7d"/>
+        </div>
+      </van-col>
+    </van-row>
   </section>
 </template>
 
 <script>
 import { getUrlParams } from "../assets/js/util.js";
 import { mapState, mapActions } from "vuex";
-
 export default {
   data() {
     return {
@@ -95,6 +121,13 @@ export default {
     toCaseListPage() {
       this.$router.push("caseList");
     },
+    toCaseRelationPage() {
+        this.$router.push("caseRelation");
+    },
+    toUserRelationPage() {
+        this.$router.push("userRelation");
+    }
+
   },
 };
 </script>

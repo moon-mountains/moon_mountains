@@ -1,6 +1,6 @@
 <template>
   <section>
-    <van-nav-bar title="案件详情" />
+    <van-nav-bar title="案件详情" left-arrow @click-left="onClickLeft"/>
     <van-steps :active="sureActiv" direction="vertical" style="font-size:.2rem">
       <van-step v-for="(item, index) in renderStepList" :key="index">{{item.text}}</van-step>
     </van-steps>
@@ -135,6 +135,9 @@ export default {
         }
       })
       return text
+    },
+    onClickLeft() {
+        this.$router.go(-1);
     }
   },
 };

@@ -1,9 +1,12 @@
 <template>
   <section>
-    <van-nav-bar title="案件列表" />
+    <van-nav-bar title="案件列表" left-arrow @click-left="onClickLeft"/>
     <van-row class="m_t_2 b_g_white" v-for="(item, index) in caseList" :key="index">
       <van-col>
         <div class="h_117 f_4 m_l_5">案件号:{{item.caseNo}}</div>
+        <div class="h_60 f_3 m_l_5">报案时间:{{item.reportCaseTime}}</div>
+        <div class="h_60 f_3 m_l_5">公司名称:{{item.insurePersion}}</div>
+        <div class="h_60 f_3 m_l_5">事故原因:{{item.accidentReason}}</div>
         <!-- <div class="h_117 f_4 m_l_5">状态:sdjils<van-icon name="arrow" /></div> -->
       </van-col>
       <van-col :span="24">
@@ -73,6 +76,9 @@ export default {
     toCaseDetailPage(item) {
       window.localStorage.setItem('caseNo', item.caseNo || '');
       this.$router.push("caseDetail");
+    },
+    onClickLeft() {
+        this.$router.go(-1);
     },
   },
 };

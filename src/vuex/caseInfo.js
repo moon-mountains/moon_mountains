@@ -19,7 +19,7 @@ const caseInfo = {
                 url: api.getWxUserInfo,
                 data: params
             }).then((data = {}) => {
-                if(data.code === 200) {
+               if(data.code === 200) {
                     let res = data.data
                     console.log('getWxUserInfo-----', res)
                     context.commit('getWxUserInfo', res)
@@ -112,6 +112,63 @@ const caseInfo = {
                 console.log('queryWxNewCaseStatus----err', err)
             });
         },
+        // 获取验证码
+        toGetVerifyCode(context, params ={}) {
+            return axios({
+                method: 'get',
+                url: api.verifyCode,
+                data: params
+            }).then(res => {
+                return res
+            }).catch(err => {
+                console.log('toGetVerifyCode----err', err)
+            });
+        },
+        //绑定用户
+        toWxUserRelation(context, params ={}) {
+            return axios({
+                headers: {
+                    'Authorization': context.state.userInfo.token || ''
+                },
+                method: 'post',
+                url: api.wxUserRelation,
+                data: params
+            }).then(res => {
+                return res
+            }).catch(err => {
+                console.log('wxUserRelation----err', err)
+            });
+        },
+        //取消绑定用户
+        toDeleteWxUserRelation(context, params ={}) {
+            return axios({
+                headers: {
+                    'Authorization': context.state.userInfo.token || ''
+                },
+                method: 'post',
+                url: api.deleteWxUserRelation,
+                data: params
+            }).then(res => {
+                return res
+            }).catch(err => {
+                console.log('toDeleteWxUserRelation----err', err)
+            });
+        },
+        //绑定案件
+        toCaseBaseInfoRelation(context, params ={}) {
+            return axios({
+                headers: {
+                    'Authorization': context.state.userInfo.token || ''
+                },
+                method: 'post',
+                url: api.wxCaseBaseInfoRelation,
+                data: params
+            }).then(res => {
+                return res
+            }).catch(err => {
+                console.log('toCaseBaseInfoRelation----err', err)
+            });
+        }
     },
     getters: {}
 }
