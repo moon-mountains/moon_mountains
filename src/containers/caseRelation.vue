@@ -1,6 +1,6 @@
 <template>
     <section>
-        <van-nav-bar title="案件绑定" left-arrow @click-left="onClickLeft"/>
+        <van-nav-bar title="案件关联" left-arrow @click-left="onClickLeft"/>
         <van-form @submit="toCaseInfoRelation">
             <van-field
                     v-model="caseNo"
@@ -10,7 +10,7 @@
                     :rules="[{ required: true, message: '请填写案件号' }]"
             />
             <div style="margin: 16px;">
-                <van-button round block type="info" native-type="submit">绑定</van-button>
+                <van-button round block type="info" native-type="submit">确定关联</van-button>
             </div>
         </van-form>
     </section>
@@ -32,7 +32,7 @@
                     if (data.code === 200) {
                         this.$notify({type: "success", message: data.message});
                     } else {
-                        this.$notify(data.message || "绑定失败");
+                        this.$notify(data.message || "关联失败");
                     }
                 });
             },

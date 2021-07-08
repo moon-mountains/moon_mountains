@@ -22,4 +22,8 @@ exports.api = {
     wxUserRelation: `${orign}/api/wx/wxUserRelation`,
     //微信用户案件转接绑定
     wxCaseBaseInfoRelation: `${orign}/auth/wx/wxCaseBaseInfoRelation`,
+    //微信用户报案信息缓存查询
+    queryWxCaseBaseInfoCache: `${orign}/auth/wx/queryWxCaseBaseInfoCache`,
+    //微信用户报案信息缓存
+    saveWxCaseBaseInfoCache: `${orign}/auth/wx/saveWxCaseBaseInfoCache`,
 }

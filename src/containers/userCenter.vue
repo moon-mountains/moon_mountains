@@ -41,7 +41,7 @@
       </van-col>
       <van-col span="18">
         <div class="my_case" @click="toCaseRelationPage">
-          <div>案件转接</div>
+          <div>案件关联</div>
           <van-icon name="arrow" size=".4rem" color="#7c7c7d"/>
         </div>
       </van-col>
@@ -56,7 +56,7 @@
       </van-col>
       <van-col span="18">
         <div class="my_case" @click="toUserRelationPage">
-          <div>账号绑定</div>
+          <div>账号关联</div>
           <van-icon name="arrow" size=".4rem" color="#7c7c7d"/>
         </div>
       </van-col>

@@ -19,6 +19,7 @@ const caseInfo = {
                 url: api.getWxUserInfo,
                 data: params
             }).then((data = {}) => {
+                data = {"code":200,"data":{"access_token":null,"city":null,"country":null,"headimgurl":"https://thirdwx.qlogo.cn/mmopen/vi_32/L6SG55UJpKRiae1YRC9K3gibcsSjmWSFiarIhAibFrIFHOO9ic5TRwskg454hUaLMZsAyPBqdXBREbjj3sK7z1maDgA/132","nickname":"青年","openid":null,"province":null,"sex":null,"token":"BearerWxeyJhbGciOiJIUzUxMiJ9.eyJqdGkiOiJlNGFiY2EzMTk3ODg0YjA1YTJjY2U5NTJlZGYyMWVkNW9scTY1NmY2SnI0OGd6T1FIbjNkMXYxTWVReU0iLCJhdXRoIjoid3hfdXNlciJ9.PP1LFB1e3FM3JeUiXtqNfa_CqiG9F1XD7YatpWF-MPfN2V3_WsF5qWSk24v_CUFgyXL7gjiR7YacdIBnJ1mVXA"},"message":"请求成功"};
                if(data.code === 200) {
                     let res = data.data
                     console.log('getWxUserInfo-----', res)
@@ -167,6 +168,40 @@ const caseInfo = {
                 return res
             }).catch(err => {
                 console.log('toCaseBaseInfoRelation----err', err)
+            });
+        },
+        // 新增案件基本信息
+        toSaveWxCaseBaseInfoCache(context, params ={}) {
+            console.log('--get--token', context.state.userInfo.token);
+            return axios({
+                headers: {
+                    'Authorization': context.state.userInfo.token || ''
+                },
+                method: 'post',
+                url: api.saveWxCaseBaseInfoCache,
+                data: params
+            }).then(res => {
+                console.log('toSaveWxCaseBaseInfoCache-----', res)
+                return res
+            }).catch(err => {
+                console.log('toSaveWxCaseBaseInfoCache----err', err)
+            });
+        },
+        // 新增案件基本信息
+        toQueryWxCaseBaseInfoCache(context, params ={}) {
+            console.log('toQueryWxCaseBaseInfoCache--get--token', context.state.userInfo.token);
+            return axios({
+                headers: {
+                    'Authorization': context.state.userInfo.token ||window.sessionStorage.getItem('token') || ''
+                },
+                method: 'post',
+                url: api.queryWxCaseBaseInfoCache,
+                data: params
+            }).then(res => {
+                console.log('toQueryWxCaseBaseInfoCache-----', res)
+                return res
+            }).catch(err => {
+                console.log('toQueryWxCaseBaseInfoCache----err', err)
             });
         }
     },

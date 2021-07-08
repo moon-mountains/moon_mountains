@@ -109,6 +109,9 @@
         @select="selectReason"
       ></van-action-sheet>
       <div class="m_16">
+        <van-button block type="info" native-type="button" @click="onTempSubmit">保存</van-button>
+      </div>
+      <div class="m_16">
         <van-button block type="primary" native-type="submit">提交</van-button>
       </div>
     </van-form>
@@ -153,6 +156,7 @@ export default {
   created() {
     this.isShowAll = false;
     this.getCode();
+    this.queryWxCaseBaseInfoCache();
   },
   computed: {
     ...mapState({
@@ -169,6 +173,8 @@ export default {
       "saveReportCaseBaseInfo",
       "getWxUserInfo",
       "queryAllSalesman",
+      "toSaveWxCaseBaseInfoCache",
+      "toQueryWxCaseBaseInfoCache"
     ]),
     getqueryAllSalesman() {
       this.queryAllSalesman().then((data = {}) => {
@@ -279,19 +285,50 @@ export default {
       this.isShowSelection = false;
     },
     onSubmit() {
-      console.log("onSubmit-----", this.caseInfoForm);
-      this.saveReportCaseBaseInfo(this.caseInfoForm).then((data = {}) => {
-        console.log("saveReportCaseBaseInfo-----", data);
-        if (data.code === 200) {
-          this.$router.push("userCenter");
-        } if(data.code == '-2') {
-          this.$notify(data.message || "请填写正确的业务员");
-        }else {
-          this.$notify(data.message || "提交失败了");
-        }
-        // this.$router.push("userCenter");
-      });
-    },
+          console.log("onSubmit-----", this.caseInfoForm);
+          this.saveReportCaseBaseInfo(this.caseInfoForm).then((data = {}) => {
+              console.log("saveReportCaseBaseInfo-----", data);
+              if (data.code === 200) {
+                  this.$router.push("userCenter");
+              } if(data.code == '-2') {
+                  this.$notify(data.message || "请填写正确的业务员");
+              }else {
+                  this.$notify(data.message || "提交失败了");
+              }
+              // this.$router.push("userCenter");
+          });
+      },
+      onTempSubmit() {
+          console.log("onTempSubmit-----", this.caseInfoForm);
+          this.toSaveWxCaseBaseInfoCache(this.caseInfoForm).then((data = {}) => {
+              console.log("saveReportCaseBaseInfo-----", data);
+              if (data.code === 200) {
+                  this.$notify({type:'success',message:data.message});
+              }else {
+                  this.$notify(data.message || "提交失败了");
+              }
+          });
+      },
+      queryWxCaseBaseInfoCache() {
+          this.toQueryWxCaseBaseInfoCache().then((data = {}) => {
+              console.log("queryWxCaseBaseInfoCache-----", data);
+              if (data.code === 200) {
+                  if (data.data){
+                      let res = data.data;
+                      this.caseInfoForm.saleAgentNo = res.saleAgentNo||"";
+                      this.caseInfoForm.caseInfoStatus = res.caseInfoStatus||"0";
+                      this.caseInfoForm.saleAgentName = res.saleAgentName||"";
+                      this.caseInfoForm.insurePersion = res.insurePersion||"";
+                      this.caseInfoForm.linkPerson = res.linkPerson||"";
+                      this.caseInfoForm.customerPhone = res.customerPhone||"";
+                      this.caseInfoForm.insureHappenTime = res.insureHappenTime||"";
+                      this.caseInfoForm.accidentReason = res.accidentReason||"";
+                      this.caseInfoForm.accidentDes = res.accidentDes||"";
+                  }
+              }
+          });
+      },
+
     showPop(type) {
       switch (type) {
         // 业务员
