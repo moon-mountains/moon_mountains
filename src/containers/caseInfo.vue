@@ -156,7 +156,7 @@ export default {
   created() {
     this.isShowAll = false;
     this.getCode();
-    this.queryWxCaseBaseInfoCache();
+    // this.queryWxCaseBaseInfoCache();
   },
   computed: {
     ...mapState({
@@ -195,6 +195,7 @@ export default {
       if(this.userInfo.nickname) {
         this.wxUserInfo = this.userInfo;
         this.isShowAll = true;
+        this.queryWxCaseBaseInfoCache();
         return;
       }
       // 非静默授权，第一次有弹框
@@ -218,6 +219,7 @@ export default {
           console.log('--token', res.token)
           window.sessionStorage.setItem('token', res.token || '');
           this.isShowAll = true;
+          this.queryWxCaseBaseInfoCache();
         } else {
           this.$notify("请重新进入");
         }
