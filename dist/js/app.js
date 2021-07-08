@@ -288,7 +288,7 @@ __webpack_require__.r(__webpack_exports__);
             message: data.message
           });
         } else {
-          _this2.$notify(data.message || '绑定失败');
+          _this2.$notify(data.message || '关联失败');
         }
       });
     },
@@ -652,6 +652,9 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
 
 
 
@@ -691,6 +694,7 @@ __webpack_require__.r(__webpack_exports__);
   created: function created() {
     this.isShowAll = false;
     this.getCode();
+    this.queryWxCaseBaseInfoCache();
   },
   computed: Object(D_workSpace_yeanClaim_claim_wx_node_modules_babel_runtime_helpers_esm_objectSpread2__WEBPACK_IMPORTED_MODULE_4__["default"])({}, Object(vuex__WEBPACK_IMPORTED_MODULE_7__["mapState"])({
     // openid(state) {
@@ -700,7 +704,7 @@ __webpack_require__.r(__webpack_exports__);
       return state.caseInfo.userInfo || {};
     }
   })),
-  methods: Object(D_workSpace_yeanClaim_claim_wx_node_modules_babel_runtime_helpers_esm_objectSpread2__WEBPACK_IMPORTED_MODULE_4__["default"])(Object(D_workSpace_yeanClaim_claim_wx_node_modules_babel_runtime_helpers_esm_objectSpread2__WEBPACK_IMPORTED_MODULE_4__["default"])({}, Object(vuex__WEBPACK_IMPORTED_MODULE_7__["mapActions"])(["saveReportCaseBaseInfo", "getWxUserInfo", "queryAllSalesman"])), {}, {
+  methods: Object(D_workSpace_yeanClaim_claim_wx_node_modules_babel_runtime_helpers_esm_objectSpread2__WEBPACK_IMPORTED_MODULE_4__["default"])(Object(D_workSpace_yeanClaim_claim_wx_node_modules_babel_runtime_helpers_esm_objectSpread2__WEBPACK_IMPORTED_MODULE_4__["default"])({}, Object(vuex__WEBPACK_IMPORTED_MODULE_7__["mapActions"])(["saveReportCaseBaseInfo", "getWxUserInfo", "queryAllSalesman", "toSaveWxCaseBaseInfoCache", "toQueryWxCaseBaseInfoCache"])), {}, {
     getqueryAllSalesman: function getqueryAllSalesman() {
       var _this = this;
 
@@ -862,6 +866,47 @@ __webpack_require__.r(__webpack_exports__);
           _this4.$notify(data.message || "提交失败了");
         } // this.$router.push("userCenter");
 
+      });
+    },
+    onTempSubmit: function onTempSubmit() {
+      var _this5 = this;
+
+      console.log("onTempSubmit-----", this.caseInfoForm);
+      this.toSaveWxCaseBaseInfoCache(this.caseInfoForm).then(function () {
+        var data = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
+        console.log("saveReportCaseBaseInfo-----", data);
+
+        if (data.code === 200) {
+          _this5.$notify({
+            type: 'success',
+            message: data.message
+          });
+        } else {
+          _this5.$notify(data.message || "提交失败了");
+        }
+      });
+    },
+    queryWxCaseBaseInfoCache: function queryWxCaseBaseInfoCache() {
+      var _this6 = this;
+
+      this.toQueryWxCaseBaseInfoCache().then(function () {
+        var data = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
+        console.log("queryWxCaseBaseInfoCache-----", data);
+
+        if (data.code === 200) {
+          if (data.data) {
+            var res = data.data;
+            _this6.caseInfoForm.saleAgentNo = res.saleAgentNo || "";
+            _this6.caseInfoForm.caseInfoStatus = res.caseInfoStatus || "0";
+            _this6.caseInfoForm.saleAgentName = res.saleAgentName || "";
+            _this6.caseInfoForm.insurePersion = res.insurePersion || "";
+            _this6.caseInfoForm.linkPerson = res.linkPerson || "";
+            _this6.caseInfoForm.customerPhone = res.customerPhone || "";
+            _this6.caseInfoForm.insureHappenTime = res.insureHappenTime || "";
+            _this6.caseInfoForm.accidentReason = res.accidentReason || "";
+            _this6.caseInfoForm.accidentDes = res.accidentDes || "";
+          }
+        }
       });
     },
     showPop: function showPop(type) {
@@ -1046,7 +1091,7 @@ __webpack_require__.r(__webpack_exports__);
             message: data.message
           });
         } else {
-          _this.$notify(data.message || "绑定失败");
+          _this.$notify(data.message || "关联失败");
         }
       });
     },
@@ -1113,7 +1158,7 @@ __webpack_require__.r(__webpack_exports__);
             message: data.message
           });
         } else {
-          _this.$notify(data.message || '取消绑定失败');
+          _this.$notify(data.message || '取消关联失败');
         }
       });
     },
@@ -1376,7 +1421,7 @@ var render = function() {
     "section",
     [
       _c("van-nav-bar", {
-        attrs: { title: "添加绑定", "left-arrow": "" },
+        attrs: { title: "添加关联", "left-arrow": "" },
         on: { "click-left": _vm.onClickLeft }
       }),
       _c(
@@ -1471,7 +1516,7 @@ var render = function() {
                     "native-type": "submit"
                   }
                 },
-                [_vm._v("绑定")]
+                [_vm._v("确定关联")]
               )
             ],
             1
@@ -1778,6 +1823,25 @@ var render = function() {
                     {
                       attrs: {
                         block: "",
+                        type: "info",
+                        "native-type": "button"
+                      },
+                      on: { click: _vm.onTempSubmit }
+                    },
+                    [_vm._v("保存")]
+                  )
+                ],
+                1
+              ),
+              _c(
+                "div",
+                { staticClass: "m_16" },
+                [
+                  _c(
+                    "van-button",
+                    {
+                      attrs: {
+                        block: "",
                         type: "primary",
                         "native-type": "submit"
                       }
@@ -1896,7 +1960,7 @@ var render = function() {
     "section",
     [
       _c("van-nav-bar", {
-        attrs: { title: "案件绑定", "left-arrow": "" },
+        attrs: { title: "案件关联", "left-arrow": "" },
         on: { "click-left": _vm.onClickLeft }
       }),
       _c(
@@ -1932,7 +1996,7 @@ var render = function() {
                     "native-type": "submit"
                   }
                 },
-                [_vm._v("绑定")]
+                [_vm._v("确定关联")]
               )
             ],
             1
@@ -1970,7 +2034,7 @@ var render = function() {
     "section",
     [
       _c("van-nav-bar", {
-        attrs: { title: "取消绑定", "left-arrow": "" },
+        attrs: { title: "取消关联", "left-arrow": "" },
         on: { "click-left": _vm.onClickLeft }
       }),
       _c(
@@ -2007,7 +2071,7 @@ var render = function() {
                     "native-type": "submit"
                   }
                 },
-                [_vm._v("解除绑定")]
+                [_vm._v("解除关联")]
               )
             ],
             1
@@ -2136,7 +2200,7 @@ var render = function() {
                     on: { click: _vm.toCaseRelationPage }
                   },
                   [
-                    _c("div", [_vm._v("案件转接")]),
+                    _c("div", [_vm._v("案件关联")]),
                     _c("van-icon", {
                       attrs: { name: "arrow", size: ".4rem", color: "#7c7c7d" }
                     })
@@ -2175,7 +2239,7 @@ var render = function() {
                     on: { click: _vm.toUserRelationPage }
                   },
                   [
-                    _c("div", [_vm._v("账号绑定")]),
+                    _c("div", [_vm._v("账号关联")]),
                     _c("van-icon", {
                       attrs: { name: "arrow", size: ".4rem", color: "#7c7c7d" }
                     })
@@ -2217,7 +2281,7 @@ var render = function() {
     "section",
     [
       _c("van-nav-bar", {
-        attrs: { title: "用户绑定", "left-arrow": "" },
+        attrs: { title: "账号关联", "left-arrow": "" },
         on: { "click-left": _vm.onClickLeft }
       }),
       _c(
@@ -2225,12 +2289,12 @@ var render = function() {
         { attrs: { clickable: "", "column-num": 2 } },
         [
           _c("van-grid-item", {
-            attrs: { icon: "add-o", text: "添加绑定", to: "/addUserRelation" }
+            attrs: { icon: "add-o", text: "添加关联", to: "/addUserRelation" }
           }),
           _c("van-grid-item", {
             attrs: {
               icon: "close",
-              text: "取消绑定",
+              text: "取消关联",
               to: "/deleteUserRelation"
             }
           })
@@ -2240,13 +2304,13 @@ var render = function() {
       _c(
         "van-notice-bar",
         {
-          attrs: {
-            background: "#ecf9ff",
-            "left-icon": "info-o",
-            wrapable: "true"
-          }
+          attrs: { background: "#ecf9ff", "left-icon": "info-o", wrapable: "" }
         },
-        [_vm._v(" 一个微信号只能绑定一个理赔账号，如需变更，先取消绑定再添加 ")]
+        [
+          _vm._v(
+            " 一个微信号只能关联一个理赔账号，如需变更，先取消关联再添加关联 "
+          )
+        ]
       )
     ],
     1
@@ -2472,7 +2536,11 @@ exports.api = {
   //微信用户绑定
   wxUserRelation: "".concat(orign, "/api/wx/wxUserRelation"),
   //微信用户案件转接绑定
-  wxCaseBaseInfoRelation: "".concat(orign, "/auth/wx/wxCaseBaseInfoRelation")
+  wxCaseBaseInfoRelation: "".concat(orign, "/auth/wx/wxCaseBaseInfoRelation"),
+  //微信用户报案信息缓存查询
+  queryWxCaseBaseInfoCache: "".concat(orign, "/auth/wx/queryWxCaseBaseInfoCache"),
+  //微信用户报案信息缓存
+  saveWxCaseBaseInfoCache: "".concat(orign, "/auth/wx/saveWxCaseBaseInfoCache")
 };
 
 /***/ }),
@@ -3354,6 +3422,21 @@ var caseInfo = {
         data: params
       }).then(function () {
         var data = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
+        data = {
+          "code": 200,
+          "data": {
+            "access_token": null,
+            "city": null,
+            "country": null,
+            "headimgurl": "https://thirdwx.qlogo.cn/mmopen/vi_32/L6SG55UJpKRiae1YRC9K3gibcsSjmWSFiarIhAibFrIFHOO9ic5TRwskg454hUaLMZsAyPBqdXBREbjj3sK7z1maDgA/132",
+            "nickname": "青年",
+            "openid": null,
+            "province": null,
+            "sex": null,
+            "token": "BearerWxeyJhbGciOiJIUzUxMiJ9.eyJqdGkiOiJlNGFiY2EzMTk3ODg0YjA1YTJjY2U5NTJlZGYyMWVkNW9scTY1NmY2SnI0OGd6T1FIbjNkMXYxTWVReU0iLCJhdXRoIjoid3hfdXNlciJ9.PP1LFB1e3FM3JeUiXtqNfa_CqiG9F1XD7YatpWF-MPfN2V3_WsF5qWSk24v_CUFgyXL7gjiR7YacdIBnJ1mVXA"
+          },
+          "message": "请求成功"
+        };
 
         if (data.code === 200) {
           var res = data.data;
@@ -3512,6 +3595,42 @@ var caseInfo = {
         return res;
       }).catch(function (err) {
         console.log('toCaseBaseInfoRelation----err', err);
+      });
+    },
+    // 新增案件基本信息
+    toSaveWxCaseBaseInfoCache: function toSaveWxCaseBaseInfoCache(context) {
+      var params = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
+      console.log('--get--token', context.state.userInfo.token);
+      return axios__WEBPACK_IMPORTED_MODULE_0___default()({
+        headers: {
+          'Authorization': context.state.userInfo.token || ''
+        },
+        method: 'post',
+        url: _api_urls_js__WEBPACK_IMPORTED_MODULE_1__["api"].saveWxCaseBaseInfoCache,
+        data: params
+      }).then(function (res) {
+        console.log('toSaveWxCaseBaseInfoCache-----', res);
+        return res;
+      }).catch(function (err) {
+        console.log('toSaveWxCaseBaseInfoCache----err', err);
+      });
+    },
+    // 新增案件基本信息
+    toQueryWxCaseBaseInfoCache: function toQueryWxCaseBaseInfoCache(context) {
+      var params = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
+      console.log('toQueryWxCaseBaseInfoCache--get--token', context.state.userInfo.token);
+      return axios__WEBPACK_IMPORTED_MODULE_0___default()({
+        headers: {
+          'Authorization': context.state.userInfo.token || window.sessionStorage.getItem('token') || ''
+        },
+        method: 'post',
+        url: _api_urls_js__WEBPACK_IMPORTED_MODULE_1__["api"].queryWxCaseBaseInfoCache,
+        data: params
+      }).then(function (res) {
+        console.log('toQueryWxCaseBaseInfoCache-----', res);
+        return res;
+      }).catch(function (err) {
+        console.log('toQueryWxCaseBaseInfoCache----err', err);
       });
     }
   },
